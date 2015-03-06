@@ -25,3 +25,6 @@ TARGET   = AVR-Sensors
 TEMPLATE = app
 
 QMAKE_CXXFLAGS += -O3
+
+RESOURCES += \
+    common.qrc

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>408</width>
     <height>500</height>
    </rect>
   </property>
@@ -25,21 +25,19 @@
   <property name="windowTitle">
    <string>AVR-Sensors</string>
   </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
+  <property name="windowIcon">
+   <iconset resource="../common.qrc">
+    <normaloff>:/icons/icon_main</normaloff>:/icons/icon_main</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="layoutCentralWidget">
     <item row="0" column="0">
      <widget class="QTabWidget" name="mainTab">
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
       <widget class="QWidget" name="tabSensors">
        <attribute name="title">
         <string>Sensory</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="layoutTabSensors">
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="layoutSensors"/>
         </item>
@@ -59,7 +57,7 @@
        <attribute name="title">
         <string>Pomiary</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="layoutTabOptions">
         <item row="0" column="0">
          <widget class="QWidget" name="layoutOptions" native="true">
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -68,7 +66,7 @@
              <property name="title">
               <string>Czujniki</string>
              </property>
-             <layout class="QFormLayout" name="formLayout_3">
+             <layout class="QFormLayout" name="formGroupCount">
               <item row="0" column="0">
                <widget class="QLabel" name="labelCount">
                 <property name="text">
@@ -202,20 +200,17 @@
               </item>
               <item row="0" column="1">
                <widget class="QDoubleSpinBox" name="Time">
-                <property name="prefix">
-                 <string/>
-                </property>
                 <property name="suffix">
                  <string> s</string>
                 </property>
                 <property name="minimum">
-                 <double>0.500000000000000</double>
+                 <double>0.100000000000000</double>
                 </property>
                 <property name="maximum">
                  <double>4.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.500000000000000</double>
+                 <double>0.100000000000000</double>
                 </property>
                 <property name="value">
                  <double>3.000000000000000</double>
@@ -409,7 +404,9 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../common.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>Save</sender>

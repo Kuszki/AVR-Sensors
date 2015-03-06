@@ -28,13 +28,14 @@
   <property name="windowTitle">
    <string>Opcje czujnika</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../common.qrc">
+    <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="labelName">
      <property name="text">
@@ -161,7 +162,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../common.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

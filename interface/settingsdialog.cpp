@@ -25,17 +25,15 @@ void SettingsDialog::LoadSettings(const QString& sSection)
 	INI.setIniCodec("UTF-8");
 	INI.beginGroup(sSensor);
 
-	SettingsDialog::SensorData tData;
+	tLastData.Name = INI.value("Name", "Czujnik " + sSection + 1).toString();
+	tLastData.Equation = INI.value("Equation", "x").toString();
+	tLastData.Label = INI.value("Label", "").toString();
+	tLastData.Minimum = INI.value("Minimum", 0).toInt();
+	tLastData.Maximum = INI.value("Maximum", 5).toInt();
+	tLastData.Active = INI.value("Active", false).toBool();
+	tLastData.Style = INI.value("Style", false).toBool();
 
-	tData.Name = INI.value("Name", "Czujnik " + sSection).toString();
-	tData.Equation = INI.value("Equation", "(x*5)/1024").toString();
-	tData.Label = INI.value("Label", "n/a").toString();
-	tData.Minimum = INI.value("Minimum", 0).toInt();
-	tData.Maximum = INI.value("Maximum", 5).toInt();
-	tData.Active = INI.value("Active", false).toBool();
-	tData.Style = INI.value("Style", false).toBool();
-
-	SetData(tData);
+	SetData(tLastData);
 }
 
 void SettingsDialog::SaveSettings(const QString& sSection)

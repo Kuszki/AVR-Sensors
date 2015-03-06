@@ -58,14 +58,14 @@ void SensorWidget::onDialogSave(const SettingsDialog::SensorData& tData)
 	Interface->Label->setText(tData.Name);
 	Interface->Label->setEnabled(tData.Active);
 
-	Interface->Progress->setVisible(tData.Style);
+	Interface->Progress->setVisible(tData.Style && tData.Active);
 	Interface->Progress->setFormat(Label);
 	Interface->Progress->setMaximum(tData.Maximum);
 	Interface->Progress->setMinimum(tData.Minimum);
 
-	Interface->Value->setVisible(!tData.Style);
+	Interface->Value->setVisible(!tData.Style && tData.Active);
 
-	Interface->Desc->setVisible(!tData.Style);
+	Interface->Desc->setVisible(!tData.Style || !tData.Active);
 
 	Formula = tData.Equation;
 }
