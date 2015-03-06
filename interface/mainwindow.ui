@@ -22,6 +22,12 @@
     <height>800</height>
    </size>
   </property>
+  <property name="windowTitle">
+   <string>AVR-Sensors</string>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -37,6 +43,16 @@
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="layoutSensors"/>
         </item>
+        <item row="1" column="0">
+         <widget class="QWidget" name="layoutHelper" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabOptions">
@@ -47,6 +63,35 @@
         <item row="0" column="0">
          <widget class="QWidget" name="layoutOptions" native="true">
           <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QGroupBox" name="groupCount">
+             <property name="title">
+              <string>Czujniki</string>
+             </property>
+             <layout class="QFormLayout" name="formLayout_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelCount">
+                <property name="text">
+                 <string>Ilość czujników</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="Count">
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>6</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
            <item>
             <widget class="QGroupBox" name="groupDevice">
              <property name="sizePolicy">
@@ -177,7 +222,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
+              <item row="1" column="0">
                <widget class="QCheckBox" name="Active">
                 <property name="text">
                  <string>Aktywne</string>
@@ -187,7 +232,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
+              <item row="1" column="1">
                <widget class="QPushButton" name="Save">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -212,6 +257,151 @@
        <attribute name="title">
         <string>Informacje</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QWidget" name="widget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <layout class="QFormLayout" name="formLayout_4">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelProgram">
+             <property name="text">
+              <string>Nazwa programu:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelName">
+             <property name="text">
+              <string>AVR-Sensors</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelAuthor">
+             <property name="text">
+              <string>Autor:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="labelAuthorName">
+             <property name="text">
+              <string>Łukasz &quot;Kuszki&quot; Dróżdż</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelLicense">
+             <property name="text">
+              <string>Licencja:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="labelLicenseType">
+             <property name="text">
+              <string>GNU GLP v2</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelSlite">
+             <property name="text">
+              <string>Strona projektu:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="labelContact">
+             <property name="text">
+              <string>Kontakt:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="labelMail">
+             <property name="text">
+              <string>&lt;a href=&quot;mailto:l.drozdz@o2.pl&quot;&gt;l.drozdz@o2.pl&lt;/a&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="labelGithub">
+             <property name="text">
+              <string>&lt;a href=&quot;https://github.com/Kuszki/AVR-Sensors&quot;&gt;GitHub&lt;/a&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::AutoText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QWidget" name="layoutLicense" native="true">
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelLicenseText">
+             <property name="text">
+              <string>Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji lub którejś z późniejszych wersji.</string>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignJustify|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -225,11 +415,11 @@
    <sender>Save</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>UpdateSettings()</slot>
+   <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>307</x>
-     <y>278</y>
+     <x>361</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel">
      <x>512</x>
@@ -244,8 +434,8 @@
    <slot>UpdateDevices()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>354</x>
-     <y>102</y>
+     <x>360</x>
+     <y>191</y>
     </hint>
     <hint type="destinationlabel">
      <x>473</x>
@@ -260,8 +450,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>325</x>
-     <y>150</y>
+     <x>360</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>645</x>
@@ -276,8 +466,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>194</x>
-     <y>141</y>
+     <x>247</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
@@ -285,10 +475,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Count</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateCount(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>63</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>UpdateDevices()</slot>
   <slot>UpdateLink()</slot>
-  <slot>UpdateSettings()</slot>
+  <slot>UpdateCount(int)</slot>
  </slots>
 </ui>

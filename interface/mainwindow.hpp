@@ -11,8 +11,6 @@
 
 #include "sensorwidget.hpp"
 
-#include "sensor/sensor.hpp"
-
 namespace Ui
 {
 	class MainWindow;
@@ -36,13 +34,19 @@ class MainWindow : public QMainWindow
 
 		SensorWidget** Sensors;
 
+		unsigned char uSensors;
+
+		void Connect(void);
+
+		void Disconnect(void);
+
 	public slots:
 
 		void UpdateDevices(void);
 
 		void UpdateLink(void);
 
-		void UpdateSettings(void);
+		void UpdateCount(int iCount);
 
 		void ReadData(void);
 

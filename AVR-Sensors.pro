@@ -4,16 +4,14 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport widgets
+QT       += core gui serialport widgets script
 
 SOURCES  += main.cpp\
 		  interface/mainwindow.cpp \
-		  sensor/sensor.cpp \
 		  interface/settingsdialog.cpp \
     interface/sensorwidget.cpp
 
 HEADERS  += interface/mainwindow.hpp \
-		  sensor/sensor.hpp \
 		  interface/settingsdialog.hpp \
     interface/sensorwidget.hpp
 

@@ -2,10 +2,11 @@
 #define SENSORWIDGET_HPP
 
 #include <QWidget>
+#include <QScriptEngine>
+#include <QRegularExpression>
+#include <QDebug>
 
 #include "settingsdialog.hpp"
-
-#include "sensor/sensor.hpp"
 
 namespace Ui
 {
@@ -18,30 +19,34 @@ class SensorWidget : public QWidget
 		Q_OBJECT
 
 	public:
-		explicit SensorWidget(QWidget *parent = 0);
+		SensorWidget(QWidget* parent,
+				   unsigned char uID);
+
 		~SensorWidget();
 
 	private:
+
+		const unsigned char ID;
 
 		Ui::SensorWidget* Interface;
 
 		SettingsDialog* dDialog;
 
-		Sensor* sSensor;
+		QString Formula;
 
 		bool bActive;
 
 	public slots:
 
-		void UpdateValue(unsigned uValue);
-
-		void SetValue(float fValue);
-
-		void SetLabel(const QString& sLabel);
+		void onUpdateValue(unsigned uValue);
 
 		void onOptionsClick(void);
 
 		void onDialogSave(const SettingsDialog::SensorData& tData);
+
+	signals:
+
+		void onValueChange(float fValue);
 
 };
 

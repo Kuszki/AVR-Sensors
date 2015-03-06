@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>SettingsDialog</class>
  <widget class="QDialog" name="SettingsDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Opcje czujnika</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -70,7 +73,17 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QDoubleSpinBox" name="Min"/>
+    <widget class="QDoubleSpinBox" name="Min">
+     <property name="minimum">
+      <double>-1000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>-20.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="labelMax">
@@ -80,7 +93,17 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QDoubleSpinBox" name="Max"/>
+    <widget class="QDoubleSpinBox" name="Max">
+     <property name="minimum">
+      <double>-1000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>20.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item row="6" column="0">
     <widget class="QLabel" name="labelStyle">
@@ -173,23 +196,71 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
+   <sender>Max</sender>
+   <signal>editingFinished()</signal>
    <receiver>SettingsDialog</receiver>
-   <slot>onDialogSave()</slot>
+   <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>243</x>
-     <y>289</y>
+     <x>226</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel">
-     <x>203</x>
-     <y>369</y>
+     <x>536</x>
+     <y>352</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Min</sender>
+   <signal>editingFinished()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Name</sender>
+   <signal>editingFinished()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>493</x>
+     <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Equation</sender>
+   <signal>editingFinished()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>457</x>
+     <y>164</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>onDialogSave()</slot>
+  <slot>onParamsChange()</slot>
  </slots>
 </ui>

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include <QDebug>
+#include <QPushButton>
 
 namespace Ui
 {
@@ -34,17 +35,31 @@ class SettingsDialog : public QDialog
 
 		Ui::SettingsDialog* Interface;
 
+		SensorData tLastData;
+
+		QString sSensor;
+
 	public:
 
 		explicit SettingsDialog(QWidget *parent = 0);
 		~SettingsDialog();
 
-		void LoadSettings(const QString& sFile,
-					   const QString& sSection);
+		void LoadSettings(const QString& sSection = QString());
+
+		void SaveSettings(const QString& sSection = QString());
+
+		void GetData(SettingsDialog::SensorData& tData);
+
+		void SetData(SettingsDialog::SensorData& tData,
+				   bool bRefresh = true);
+
+		void accept(void);
+
+		void reject(void);
 
 	private slots:
 
-		void onDialogSave(void);
+		void onParamsChange(void);
 
 	signals:
 
