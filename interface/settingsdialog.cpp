@@ -25,7 +25,7 @@ void SettingsDialog::LoadSettings(const QString& sSection)
 	INI.setIniCodec("UTF-8");
 	INI.beginGroup(sSensor);
 
-	tLastData.Name = INI.value("Name", "Czujnik " + sSection + 1).toString();
+	tLastData.Name = INI.value("Name", "Czujnik " + sSection).toString();
 	tLastData.Equation = INI.value("Equation", "x").toString();
 	tLastData.Label = INI.value("Label", "").toString();
 	tLastData.Minimum = INI.value("Minimum", 0).toInt();
