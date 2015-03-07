@@ -51,7 +51,11 @@ void SensorWidget::onDialogSave(const SettingsDialog::SensorData& tData)
 {
 	bActive = tData.Active;
 
-	const QString Label = tData.Label.isEmpty() ? "%v [%p%]" : "%v [" + tData.Label + "]";
+	if (!bActive)
+	{
+		Interface->Progress->setValue(0);
+		Interface->Value->display(0);
+	}
 
 	Interface->Desc->setText(tData.Label);
 
@@ -59,13 +63,15 @@ void SensorWidget::onDialogSave(const SettingsDialog::SensorData& tData)
 	Interface->Label->setEnabled(tData.Active);
 
 	Interface->Progress->setVisible(tData.Style && tData.Active);
-	Interface->Progress->setFormat(Label);
+	Interface->Progress->setFormat(tData.Label.isEmpty() ? "%v [%p%]" : "%v [" + tData.Label + "]");
 	Interface->Progress->setMaximum(tData.Maximum);
 	Interface->Progress->setMinimum(tData.Minimum);
 
 	Interface->Value->setVisible(!tData.Style && tData.Active);
 
-	Interface->Desc->setVisible(!tData.Style || !tData.Active);
+	Interface->Desc->setVisible(!tData.Style && tData.Active);
+
+	Interface->Label->setSizePolicy(tData.Active ? QSizePolicy::Preferred : QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	Formula = tData.Equation;
 }
