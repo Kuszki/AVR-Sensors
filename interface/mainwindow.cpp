@@ -53,7 +53,8 @@ void MainWindow::Connect(void)
 {
 	if (!sSerial->open(QIODevice::ReadWrite))
 		QMessageBox::warning(this,
-						 "Błąd", "Nie udało się nawiązać połączenia z wybranym urządzeniem");
+						 "Błąd",
+						 "Nie udało się nawiązać połączenia z wybranym urządzeniem");
 
 	Interface->Alive->setChecked(sSerial->isOpen());
 	Interface->groupOptions->setEnabled(sSerial->isOpen());

@@ -32,7 +32,9 @@ class SensorWidget : public QWidget
 
 		SettingsDialog* dDialog;
 
-		QString Formula;
+		QScriptEngine Engine;
+
+		QString Equation;
 
 		bool bActive;
 

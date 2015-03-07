@@ -24,16 +24,11 @@ void SensorWidget::onUpdateValue(unsigned uValue)
 {
 	if (bActive)
 	{
-		QScriptEngine Script;
-
 		float fValue = (uValue * 5) / 1024.0;
 
-		QString equation = Formula;
+		Engine.globalObject().setProperty("x", fValue, QScriptValue::ReadOnly);
 
-		equation.replace(QRegularExpression("x"),
-					  QString::number(fValue));
-
-		fValue = Script.evaluate(equation).toNumber();
+		fValue = Engine.evaluate(Equation).toNumber();
 
 		Interface->Progress->setValue(fValue);
 		Interface->Value->display(fValue);
@@ -73,5 +68,5 @@ void SensorWidget::onDialogSave(const SettingsDialog::SensorData& tData)
 
 	Interface->Label->setSizePolicy(tData.Active ? QSizePolicy::Preferred : QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-	Formula = tData.Equation;
+	Equation = tData.Equation;
 }

@@ -5,6 +5,8 @@
 #include <QSettings>
 #include <QDebug>
 #include <QPushButton>
+#include <QScriptEngine>
+#include <QMessageBox>
 
 namespace Ui
 {

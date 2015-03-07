@@ -59,7 +59,7 @@ void SettingsDialog::SaveSettings(const QString& sSection)
 void SettingsDialog::GetData(SettingsDialog::SensorData& tData)
 {
 	tData.Name = Interface->Name->text();
-	tData.Equation = Interface->Equation->text();
+	tData.Equation = Interface->Equation->document()->toPlainText();
 	tData.Label = Interface->Type->text();
 	tData.Minimum = Interface->Min->value();
 	tData.Maximum = Interface->Max->value();
@@ -70,7 +70,7 @@ void SettingsDialog::GetData(SettingsDialog::SensorData& tData)
 void SettingsDialog::SetData(SettingsDialog::SensorData& tData, bool bRefresh)
 {
 	Interface->Name->setText(tData.Name);
-	Interface->Equation->setText(tData.Equation);
+	Interface->Equation->document()->setPlainText(tData.Equation);
 	Interface->Type->setText(tData.Label);
 	Interface->Min->setValue(tData.Minimum);
 	Interface->Max->setValue(tData.Maximum);
@@ -83,11 +83,41 @@ void SettingsDialog::SetData(SettingsDialog::SensorData& tData, bool bRefresh)
 
 void SettingsDialog::accept(void)
 {
-	QDialog::accept();
+	const QString& Equation = Interface->Equation->document()->toPlainText();
 
-	GetData(tLastData);
+	QScriptEngine Script;
 
-	emit onSettingsAccept(tLastData);
+	Script.globalObject().setProperty("x", 1, QScriptValue::ReadOnly);
+
+	QScriptValue Result = Script.evaluate(Equation);
+
+	if (Equation.isEmpty())
+	{
+		QMessageBox::warning(this,
+						 "Błąd",
+						 "Podaj równanie czujnika"
+						 );
+	}
+	else if (Script.hasUncaughtException())
+	{
+		const QString sLine( QString::number(Script.uncaughtExceptionLineNumber()));
+		const QString sError(Result.toString());
+
+		QMessageBox::warning(this,
+						 "Błąd",
+						 "Podane równanie zawiera błąd w linii " + sLine + "\n\"" + sError + "\""
+						 );
+
+	}
+	else
+	{
+
+		QDialog::accept();
+
+		GetData(tLastData);
+
+		emit onSettingsAccept(tLastData);
+	}
 }
 
 void SettingsDialog::reject(void)
@@ -102,6 +132,6 @@ void SettingsDialog::onParamsChange(void)
 	Interface->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
 				Interface->Min->value() < Interface->Max->value() &&
 				!Interface->Name->text().isEmpty() &&
-				!Interface->Equation->text().isEmpty()
+				!Interface->Equation->document()->toPlainText().isEmpty()
 				);
 }
