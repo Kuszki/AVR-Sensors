@@ -4,7 +4,9 @@ Uniwersalne oprogramowanie obsługujące sensory podłączone do kontrolera AVR
 O projekcie
 ====================
 Program stanowi aplikacje obsługującą mikrokontroler wykonujący pomiary dowolnych wielkości w czasie rzeczywistym.
+
 W programie istnieje możliwość zdefiniowania od 0 do 6 sensorów i wprowadzenia ich parametrów. Kontroler AVR powinien dostarczać informacje o napięciu kolejnych sensorów w skali 0-5V.
+
 W przyszłości zostanie zaimplementowany mechanizm obsługi zdarzeń dla sensorów.
 
 Licencja
