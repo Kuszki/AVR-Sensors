@@ -28,7 +28,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="mainTab">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabSensors">
        <attribute name="title">
@@ -204,13 +204,13 @@
                  <string> s</string>
                 </property>
                 <property name="minimum">
-                 <double>0.100000000000000</double>
+                 <double>0.050000000000000</double>
                 </property>
                 <property name="maximum">
                  <double>4.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.100000000000000</double>
+                 <double>0.050000000000000</double>
                 </property>
                 <property name="value">
                  <double>3.000000000000000</double>
