@@ -10,10 +10,10 @@
 
 namespace Ui
 {
-	class SettingsDialog;
+	class SensorDialog;
 }
 
-class SettingsDialog : public QDialog
+class SensorDialog : public QDialog
 {
 
 		Q_OBJECT
@@ -35,7 +35,7 @@ class SettingsDialog : public QDialog
 
 	private:
 
-		Ui::SettingsDialog* Interface;
+		Ui::SensorDialog* Interface;
 
 		SensorData tLastData;
 
@@ -43,16 +43,16 @@ class SettingsDialog : public QDialog
 
 	public:
 
-		explicit SettingsDialog(QWidget *parent = 0);
-		~SettingsDialog();
+		explicit SensorDialog(QWidget* parent = nullptr);
+		~SensorDialog();
 
 		void LoadSettings(const QString& sSection = QString());
 
 		void SaveSettings(const QString& sSection = QString());
 
-		void GetData(SettingsDialog::SensorData& tData);
+		void GetData(SensorDialog::SensorData& tData);
 
-		void SetData(SettingsDialog::SensorData& tData,
+		void SetData(SensorDialog::SensorData& tData,
 				   bool bRefresh = true);
 
 		void accept(void);
@@ -65,7 +65,7 @@ class SettingsDialog : public QDialog
 
 	signals:
 
-		void onSettingsAccept(const SettingsDialog::SensorData& tData);
+		void onSettingsAccept(const SensorDialog::SensorData& tData);
 
 };
 

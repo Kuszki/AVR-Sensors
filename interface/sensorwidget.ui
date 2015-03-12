@@ -170,6 +170,13 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QToolButton" name="Delete">
+     <property name="icon">
+      <iconset theme="list-remove"/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>

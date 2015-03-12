@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingsDialog</class>
- <widget class="QDialog" name="SettingsDialog">
+ <class>SensorDialog</class>
+ <widget class="QDialog" name="SensorDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>270</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>560</width>
-    <height>270</height>
+    <height>300</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,8 +27,40 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="3">
+    <widget class="QGroupBox" name="groupEquation">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Równanie</string>
+     </property>
+     <layout class="QGridLayout" name="layoutScript">
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="Equation">
+        <property name="tabStopWidth">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="1" rowspan="2">
-    <widget class="QGroupBox" name="Enabled">
+    <widget class="QGroupBox" name="groupOptions">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -36,18 +68,15 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Aktywny</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
+      <string>Ustawienia</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
-     <layout class="QFormLayout" name="formLayout_2">
+     <layout class="QFormLayout" name="layoutOptions">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="labelName">
         <property name="text">
@@ -136,35 +165,17 @@
         </item>
        </layout>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QGroupBox" name="groupEquation">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Równanie</string>
-     </property>
-     <layout class="QGridLayout" name="groupScript">
-      <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="Equation">
-        <property name="tabStopWidth">
-         <number>10</number>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="Enabled">
+        <property name="text">
+         <string>Aktywny</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelEnabled">
+        <property name="text">
+         <string>Stan</string>
         </property>
        </widget>
       </item>
@@ -180,7 +191,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -196,7 +207,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -212,7 +223,7 @@
   <connection>
    <sender>Max</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -228,7 +239,7 @@
   <connection>
    <sender>Min</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -244,7 +255,7 @@
   <connection>
    <sender>Name</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">

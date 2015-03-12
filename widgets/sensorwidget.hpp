@@ -6,7 +6,7 @@
 #include <QRegularExpression>
 #include <QDebug>
 
-#include "interface/settingsdialog.hpp"
+#include "windows/sensordialog.hpp"
 
 namespace Ui
 {
@@ -27,7 +27,7 @@ class SensorWidget : public QWidget
 
 		Ui::SensorWidget* Interface;
 
-		SettingsDialog* dDialog;
+		SensorDialog* dDialog;
 
 		QString Equation;
 
@@ -39,7 +39,7 @@ class SensorWidget : public QWidget
 
 		void onOptionsClick(void);
 
-		void onDialogSave(const SettingsDialog::SensorData& tData);
+		void onDialogSave(const SensorDialog::SensorData& tData);
 
 	signals:
 

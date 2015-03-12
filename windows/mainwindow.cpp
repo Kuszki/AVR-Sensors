@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	Interface->Active->setChecked(INI.value("Active", false).toBool());
 	Interface->Time->setValue(INI.value("Time", 3.0).toDouble());
-	Interface->Count->setValue(INI.value("Count", 1).toInt());
 
 	connect(sSerial, SIGNAL(readyRead()), SLOT(UpdatehData()));
 }
@@ -43,7 +42,6 @@ MainWindow::~MainWindow()
 
 	INI.setValue("Active", Interface->Active->isChecked());
 	INI.setValue("Time", Interface->Time->value());
-	INI.setValue("Count", Interface->Count->value());
 
 	QThread::currentThread()->sleep(1);
 
@@ -119,7 +117,7 @@ void MainWindow::UpdateLink(void)
 		}
 	}
 }
-
+/*
 void MainWindow::UpdateCount(int iCount)
 {
 	for (unsigned char i = 0; i < uSensors; i++)
@@ -139,7 +137,7 @@ void MainWindow::UpdateCount(int iCount)
 		Interface->layoutSensors->addWidget(Sensors[i]);
 	}
 }
-
+*/
 void MainWindow::UpdatehData(void)
 {
 	static unsigned char aData[FRAME_SIZE];

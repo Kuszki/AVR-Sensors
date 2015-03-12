@@ -1,20 +1,20 @@
-#include "settingsdialog.hpp"
-#include "ui_settingsdialog.h"
+#include "sensordialog.hpp"
+#include "ui_sensordialog.h"
 
-SettingsDialog::SettingsDialog(QWidget *parent)
-: QDialog(parent), Interface(new Ui::SettingsDialog)
+SensorDialog::SensorDialog(QWidget *parent)
+: QDialog(parent), Interface(new Ui::SensorDialog)
 {
 	Interface->setupUi(this);
 }
 
-SettingsDialog::~SettingsDialog()
+SensorDialog::~SensorDialog()
 {
 	SaveSettings();
 
 	delete Interface;
 }
 
-void SettingsDialog::LoadSettings(const QString& sSection)
+void SensorDialog::LoadSettings(const QString& sSection)
 {
 	if (!sSection.isEmpty()) sSensor = sSection;
 
@@ -36,7 +36,7 @@ void SettingsDialog::LoadSettings(const QString& sSection)
 	SetData(tLastData);
 }
 
-void SettingsDialog::SaveSettings(const QString& sSection)
+void SensorDialog::SaveSettings(const QString& sSection)
 {
 	if (!sSection.isEmpty()) sSensor = sSection;
 
@@ -56,7 +56,7 @@ void SettingsDialog::SaveSettings(const QString& sSection)
 	INI.setValue("Style", tLastData.Style);
 }
 
-void SettingsDialog::GetData(SettingsDialog::SensorData& tData)
+void SensorDialog::GetData(SensorDialog::SensorData& tData)
 {
 	tData.Name = Interface->Name->text();
 	tData.Equation = Interface->Equation->document()->toPlainText();
@@ -67,7 +67,7 @@ void SettingsDialog::GetData(SettingsDialog::SensorData& tData)
 	tData.Style = Interface->StyleBar->isChecked();
 }
 
-void SettingsDialog::SetData(SettingsDialog::SensorData& tData, bool bRefresh)
+void SensorDialog::SetData(SensorDialog::SensorData& tData, bool bRefresh)
 {
 	Interface->Name->setText(tData.Name);
 	Interface->Equation->document()->setPlainText(tData.Equation);
@@ -81,7 +81,7 @@ void SettingsDialog::SetData(SettingsDialog::SensorData& tData, bool bRefresh)
 	if (bRefresh) emit onSettingsAccept(tData);
 }
 
-void SettingsDialog::accept(void)
+void SensorDialog::accept(void)
 {
 	const QString& Equation = Interface->Equation->document()->toPlainText();
 
@@ -119,14 +119,14 @@ void SettingsDialog::accept(void)
 	}
 }
 
-void SettingsDialog::reject(void)
+void SensorDialog::reject(void)
 {
 	QDialog::reject();
 
 	SetData(tLastData, false);
 }
 
-void SettingsDialog::onParamsChange(void)
+void SensorDialog::onParamsChange(void)
 {
 	Interface->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
 				Interface->Min->value() < Interface->Max->value() &&

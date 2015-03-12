@@ -6,10 +6,10 @@ SensorWidget::SensorWidget(QWidget *parent, int ID)
 {
 	Interface->setupUi(this);
 
-	dDialog = new SettingsDialog(this);
+	dDialog = new SensorDialog(this);
 
-	connect(dDialog, SIGNAL(onSettingsAccept(const SettingsDialog::SensorData&)),
-		   SLOT(onDialogSave(const SettingsDialog::SensorData&)));
+	connect(dDialog, SIGNAL(onSettingsAccept(const SensorDialog::SensorData&)),
+		   SLOT(onDialogSave(const SensorDialog::SensorData&)));
 
 	dDialog->LoadSettings(QString::number(ID));
 
@@ -40,7 +40,7 @@ void SensorWidget::onOptionsClick(void)
 	dDialog->open();
 }
 
-void SensorWidget::onDialogSave(const SettingsDialog::SensorData& tData)
+void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 {
 	bActive = tData.Active;
 

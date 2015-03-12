@@ -12,7 +12,7 @@
 #include <QByteArray>
 #include <QThread>
 
-#include "interface/sensorwidget.hpp"
+#include "widgets/sensorwidget.hpp"
 
 namespace Ui
 {
@@ -51,7 +51,7 @@ class MainWindow : public QMainWindow
 
 		void UpdateLink(void);
 
-		void UpdateCount(int iCount);
+		//void UpdateCount(int iCount);
 
 		void UpdatehData(void);
 
