@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-: QMainWindow(parent), Interface(new Ui::MainWindow), uSensors(6)
+: QMainWindow(parent), Interface(new Ui::MainWindow), uSensors(10)
 {
 	Interface->setupUi(this);
 
@@ -131,8 +131,6 @@ void MainWindow::UpdateCount(int iCount)
 		}
 
 	uSensors = iCount;
-
-	if (uSensors > 10) uSensors = 6;
 
 	for (unsigned char i = 0; i < uSensors; i++)
 	{
