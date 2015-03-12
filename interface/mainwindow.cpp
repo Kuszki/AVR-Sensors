@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	Interface->setupUi(this);
 
+	Engine = new QScriptEngine();
+
 	sSerial = new QSerialPort();
 
 	sSerial->setBaudRate(QSerialPort::Baud9600);
@@ -27,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 	Interface->Time->setValue(INI.value("Time", 3.0).toDouble());
 	Interface->Count->setValue(INI.value("Count", 1).toInt());
 
-	connect(sSerial, SIGNAL(readyRead()), SLOT(ReadData()));
+	connect(sSerial, SIGNAL(readyRead()), SLOT(UpdatehData()));
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +45,10 @@ MainWindow::~MainWindow()
 	INI.setValue("Time", Interface->Time->value());
 	INI.setValue("Count", Interface->Count->value());
 
+	QThread::currentThread()->sleep(1);
+
 	delete Interface;
+	delete Engine;
 	delete sSerial;
 
 	delete [] Sensors;
@@ -127,7 +132,7 @@ void MainWindow::UpdateCount(int iCount)
 
 	uSensors = iCount;
 
-	if (uSensors > 6) uSensors = 6;
+	if (uSensors > 10) uSensors = 6;
 
 	for (unsigned char i = 0; i < uSensors; i++)
 	{
@@ -137,17 +142,21 @@ void MainWindow::UpdateCount(int iCount)
 	}
 }
 
-void MainWindow::ReadData(void)
+void MainWindow::UpdatehData(void)
 {
-	if (sSerial->bytesAvailable() < 3) return;
+	static unsigned char aData[FRAME_SIZE];
 
-	unsigned char aData[3];
+	if (sSerial->bytesAvailable() < FRAME_SIZE) return;
 
-	sSerial->read((char*) aData, 3);
+	sSerial->read((char*) aData, FRAME_SIZE);
 
-	unsigned char ID = aData[0];
-	unsigned Value = (aData[2] << 8) + aData[1];
+	for (unsigned i = 0; i < (FRAME_SIZE / 2); i++)
+	{
+		const QString sLabel = "x" + QString::number(i + 1);
+		const float fValue = ((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0);
 
-	if (ID < uSensors)
-		Sensors[ID]->onUpdateValue(Value);
+		Engine->globalObject().setProperty(sLabel, fValue, QScriptValue::ReadOnly);
+	}
+
+	emit onRefresh(Engine);
 }

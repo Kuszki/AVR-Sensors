@@ -1,8 +1,8 @@
 #include "sensorwidget.hpp"
 #include "ui_sensorwidget.h"
 
-SensorWidget::SensorWidget(QWidget *parent, unsigned char uID)
-: QWidget(parent), ID(uID), Interface(new Ui::SensorWidget)
+SensorWidget::SensorWidget(QWidget *parent, int ID)
+: QWidget(parent), Interface(new Ui::SensorWidget)
 {
 	Interface->setupUi(this);
 
@@ -12,6 +12,8 @@ SensorWidget::SensorWidget(QWidget *parent, unsigned char uID)
 		   SLOT(onDialogSave(const SettingsDialog::SensorData&)));
 
 	dDialog->LoadSettings(QString::number(ID));
+
+	connect(parent, SIGNAL(onRefresh(QScriptEngine*)), SLOT(onUpdateValue(QScriptEngine*)));
 }
 
 SensorWidget::~SensorWidget()
@@ -20,15 +22,11 @@ SensorWidget::~SensorWidget()
 	delete dDialog;
 }
 
-void SensorWidget::onUpdateValue(unsigned uValue)
+void SensorWidget::onUpdateValue(QScriptEngine* Engine)
 {
 	if (bActive)
 	{
-		float fValue = (uValue * 5) / 1024.0;
-
-		Engine.globalObject().setProperty("x", fValue, QScriptValue::ReadOnly);
-
-		fValue = Engine.evaluate(Equation).toNumber();
+		float fValue = Engine->evaluate(Equation).toNumber();
 
 		Interface->Progress->setValue(fValue);
 		Interface->Value->display(fValue);

@@ -6,7 +6,7 @@
 #include <QRegularExpression>
 #include <QDebug>
 
-#include "settingsdialog.hpp"
+#include "interface/settingsdialog.hpp"
 
 namespace Ui
 {
@@ -19,20 +19,15 @@ class SensorWidget : public QWidget
 		Q_OBJECT
 
 	public:
-		SensorWidget(QWidget* parent,
-				   unsigned char uID);
+		SensorWidget(QWidget* parent, int ID);
 
 		~SensorWidget();
 
 	private:
 
-		const unsigned char ID;
-
 		Ui::SensorWidget* Interface;
 
 		SettingsDialog* dDialog;
-
-		QScriptEngine Engine;
 
 		QString Equation;
 
@@ -40,7 +35,7 @@ class SensorWidget : public QWidget
 
 	public slots:
 
-		void onUpdateValue(unsigned uValue);
+		void onUpdateValue(QScriptEngine* Engine);
 
 		void onOptionsClick(void);
 

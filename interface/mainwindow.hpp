@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#define FRAME_SIZE 12
+
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QString>
@@ -8,8 +10,9 @@
 #include <QSerialPortInfo>
 #include <QDebug>
 #include <QByteArray>
+#include <QThread>
 
-#include "sensorwidget.hpp"
+#include "interface/sensorwidget.hpp"
 
 namespace Ui
 {
@@ -30,9 +33,11 @@ class MainWindow : public QMainWindow
 
 		Ui::MainWindow* Interface;
 
-		QSerialPort* sSerial;
-
 		SensorWidget** Sensors;
+
+		QScriptEngine* Engine;
+
+		QSerialPort* sSerial;
 
 		unsigned char uSensors;
 
@@ -48,7 +53,11 @@ class MainWindow : public QMainWindow
 
 		void UpdateCount(int iCount);
 
-		void ReadData(void);
+		void UpdatehData(void);
+
+	signals:
+
+		void onRefresh(QScriptEngine* Eng);
 
 };
 

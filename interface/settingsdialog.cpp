@@ -87,9 +87,7 @@ void SettingsDialog::accept(void)
 
 	QScriptEngine Script;
 
-	Script.globalObject().setProperty("x", 1, QScriptValue::ReadOnly);
-
-	QScriptValue Result = Script.evaluate(Equation);
+	QScriptValue Result = Script.evaluate("x1=x2=x3=x4=x5=x6=1;" + Equation);
 
 	if (Equation.isEmpty())
 	{
@@ -117,6 +115,7 @@ void SettingsDialog::accept(void)
 		GetData(tLastData);
 
 		emit onSettingsAccept(tLastData);
+
 	}
 }
 
