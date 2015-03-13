@@ -1,80 +1,171 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
+MainWindow* MainWindow::Instance = nullptr;
+
 MainWindow::MainWindow(QWidget *parent)
-: QMainWindow(parent), Interface(new Ui::MainWindow), uSensors(10)
+: QMainWindow(parent), Interface(new Ui::MainWindow)
 {
+	if (Instance) qFatal("Próba zduplikowanie głównego okna.");
+	else Instance = this;
+
 	Interface->setupUi(this);
 
-	Engine = new QScriptEngine();
+	DialogAddSensor = new SensorDialog(this, 0);
 
-	sSerial = new QSerialPort();
+	Database = QSqlDatabase::addDatabase("QSQLITE");
 
-	sSerial->setBaudRate(QSerialPort::Baud9600);
-	sSerial->setParity(QSerialPort::NoParity);
-	sSerial->setStopBits(QSerialPort::OneStop);
-
-	Sensors = new SensorWidget*[uSensors];
-
-	for (int i = 0; i < uSensors; i++) Sensors[i] = nullptr;
+	Serial.setBaudRate(QSerialPort::Baud9600);
+	Serial.setParity(QSerialPort::NoParity);
+	Serial.setStopBits(QSerialPort::OneStop);
 
 	QSettings INI("Sensors.ini", QSettings::IniFormat);
 
 	INI.setIniCodec("UTF-8");
-	INI.beginGroup("App");
 
-	UpdateDevices();
+	INI.beginGroup("Connection");
 
 	Interface->Active->setChecked(INI.value("Active", false).toBool());
 	Interface->Time->setValue(INI.value("Time", 3.0).toDouble());
 
-	connect(sSerial, SIGNAL(readyRead()), SLOT(UpdatehData()));
+	INI.beginGroup("Database");
+
+	const QString dbPath = INI.value("Path", QDir::currentPath() + QDir::separator() + "database.sqlite").toString();
+
+	INI.endGroup();
+
+	if (!QFile::exists(dbPath))
+	{
+		QFile::copy(":/data/database", dbPath);
+		QFile::setPermissions(dbPath, QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::WriteGroup | QFile::ReadOther);
+	}
+
+	Database.setDatabaseName(dbPath);
+	Database.open();
+
+	QSqlQuery Query(Database);
+
+	if (Query.exec("SELECT ID FROM sensors"))
+		while (Query.next()) AddSensor(Query.value(0).toUInt());
+
+	UpdateDevices();
+
+	connect(&Serial,
+		   SIGNAL(readyRead()),
+		   SLOT(UpdatehData()));
+
+	connect(DialogAddSensor,
+		   SIGNAL(onSensorAdd(unsigned char)),
+		   SLOT(AddSensor(unsigned char)));
 }
 
 MainWindow::~MainWindow()
 {
 	Disconnect();
 
+	foreach (SensorWidget* widget, Sensors) delete widget;
+
 	QSettings INI("Sensors.ini", QSettings::IniFormat);
 
 	INI.setIniCodec("UTF-8");
-	INI.beginGroup("App");
+
+	INI.beginGroup("Connection");
 
 	INI.setValue("Active", Interface->Active->isChecked());
 	INI.setValue("Time", Interface->Time->value());
 
-	QThread::currentThread()->sleep(1);
-
 	delete Interface;
-	delete Engine;
-	delete sSerial;
-
-	delete [] Sensors;
 }
 
 void MainWindow::Connect(void)
 {
-	if (!sSerial->open(QIODevice::ReadWrite))
-		QMessageBox::warning(this,
-						 "Błąd",
-						 "Nie udało się nawiązać połączenia z wybranym urządzeniem");
+	if (!Serial.open(QIODevice::ReadWrite))
+		QMessageBox::warning(
+					this,
+					"Błąd",
+					"Nie udało się nawiązać połączenia z wybranym urządzeniem");
 
-	Interface->Alive->setChecked(sSerial->isOpen());
-	Interface->groupOptions->setEnabled(sSerial->isOpen());
+	Interface->Alive->setChecked(Serial.isOpen());
+	Interface->groupOptions->setEnabled(Serial.isOpen());
 }
 
 void MainWindow::Disconnect(void)
 {
-	if (sSerial->isOpen())
+	if (Serial.isOpen())
 	{
-		sSerial->write("\0\0\0", 3);
-		sSerial->flush();
+		Serial.write("\0\0\0", 3);
+		Serial.flush();
 
-		sSerial->close();
+		Serial.close();
 	}
 
-	Interface->Alive->setChecked(sSerial->isOpen());
-	Interface->groupOptions->setEnabled(sSerial->isOpen());
+	Interface->Alive->setChecked(Serial.isOpen());
+	Interface->groupOptions->setEnabled(Serial.isOpen());
+}
+
+void MainWindow::AddWidget(void)
+{
+	if (sender() == Interface->AddSensor)
+	{
+		DialogAddSensor->show();
+	}
+	else if (sender() == Interface->AddEvent)
+	{
+		//DialogAddEvent->show();
+	}
+	else if (sender() == Interface->AddDevice)
+	{
+		//DialogAddDevice->show();
+	}
+}
+
+void MainWindow::DeleteWidget(unsigned char ID, unsigned char uType)
+{
+	switch (uType)
+	{
+		case TYPE_SENSOR:
+
+			delete Sensors.value(ID);
+			Sensors.remove(ID);
+
+		break;
+		case TYPE_EVENT:
+
+			delete Sensors.value(ID);
+			Sensors.remove(ID);
+
+		break;
+		case TYPE_DEVICE:
+
+			delete Sensors.value(ID);
+			Sensors.remove(ID);
+
+		break;
+		default: qDebug() << "Próba usunięcia nieznanego widgetu";
+	}
+}
+
+void MainWindow::AddSensor(unsigned char ID)
+{
+	SensorWidget* widget = new SensorWidget(this, ID);
+
+	Sensors.insert(ID, widget);
+
+	Interface->layoutSensors->addWidget(widget);
+
+	connect(widget,
+		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
+		   SLOT(DeleteWidget(unsigned char,unsigned char)));
+}
+
+void MainWindow::AddEvent(unsigned char ID)
+{
+	qDebug() << "added event id =" << ID;
+}
+
+void MainWindow::AddDevice(unsigned char ID)
+{
+	qDebug() << "added device id =" << ID;
 }
 
 void MainWindow::UpdateDevices(void)
@@ -93,7 +184,7 @@ void MainWindow::UpdateLink(void)
 	{
 		Disconnect();
 
-		sSerial->setPortName(Interface->Device->currentText());
+		Serial.setPortName(Interface->Device->currentText());
 
 		Connect();
 	}
@@ -103,56 +194,50 @@ void MainWindow::UpdateLink(void)
 	}
 	else if (sender() == Interface->Save)
 	{
-		if (sSerial->isOpen())
+		if (Serial.isOpen())
 		{
 			unsigned Time = (Interface->Time->value() * 65535) / 4.19424;
 
 			unsigned char Frame[] = {
 				Interface->Active->isChecked(),
-				(unsigned char) Time & 0xFF,
-				(unsigned char) (Time >> 8) & 0xFF
+				(unsigned char) Time,
+				(unsigned char) (Time >> 8)
 			};
 
-			sSerial->write((char*) Frame, 3);
+			Serial.write((char*) Frame, 3);
 		}
 	}
 }
-/*
-void MainWindow::UpdateCount(int iCount)
-{
-	for (unsigned char i = 0; i < uSensors; i++)
-		if (Sensors[i])
-		{
-			delete Sensors[i];
 
-			Sensors[i] = nullptr;
-		}
-
-	uSensors = iCount;
-
-	for (unsigned char i = 0; i < uSensors; i++)
-	{
-		Sensors[i] = new SensorWidget(this, i);
-
-		Interface->layoutSensors->addWidget(Sensors[i]);
-	}
-}
-*/
 void MainWindow::UpdatehData(void)
 {
 	static unsigned char aData[FRAME_SIZE];
 
-	if (sSerial->bytesAvailable() < FRAME_SIZE) return;
+	if (Serial.bytesAvailable() < FRAME_SIZE) return;
 
-	sSerial->read((char*) aData, FRAME_SIZE);
+	Serial.read((char*) aData, FRAME_SIZE);
 
 	for (unsigned i = 0; i < (FRAME_SIZE / 2); i++)
 	{
-		const QString sLabel = "x" + QString::number(i + 1);
-		const float fValue = ((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0);
-
-		Engine->globalObject().setProperty(sLabel, fValue, QScriptValue::ReadOnly);
+		Engine.globalObject().setProperty(
+					QString("x%1").arg(i + 1),
+					((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0));
 	}
 
 	emit onRefresh(Engine);
+}
+
+QSqlDatabase& MainWindow::getDatabase(void)
+{
+	return Database;
+}
+
+QScriptEngine& MainWindow::getEngine(void)
+{
+	return Engine;
+}
+
+MainWindow* MainWindow::getInstance(void)
+{
+	return Instance;
 }

@@ -1,59 +1,101 @@
 #include "sensordialog.hpp"
 #include "ui_sensordialog.h"
 
-SensorDialog::SensorDialog(QWidget *parent)
-: QDialog(parent), Interface(new Ui::SensorDialog)
+#include "windows/mainwindow.hpp"
+
+SensorDialog::SensorDialog(QWidget* parent, unsigned char uID)
+: QDialog(parent), ID(uID), Interface(new Ui::SensorDialog)
 {
 	Interface->setupUi(this);
+
+	if (!ID) setWindowTitle("Dodaj sensor");
+
+	GetData(DefaultData);
 }
 
-SensorDialog::~SensorDialog()
+SensorDialog::~SensorDialog(void)
 {
-	SaveSettings();
-
 	delete Interface;
 }
 
-void SensorDialog::LoadSettings(const QString& sSection)
+bool SensorDialog::LoadSettings(void)
 {
-	if (!sSection.isEmpty()) sSensor = sSection;
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	if (sSensor.isEmpty()) return;
+	query.prepare("SELECT name, expr, type, active, style, min,  max \
+			    FROM sensors \
+			    WHERE ID=:ID");
 
-	QSettings INI("Sensors.ini", QSettings::IniFormat);
+	query.bindValue(":ID", ID);
 
-	INI.setIniCodec("UTF-8");
-	INI.beginGroup(sSensor);
+	if (query.exec() && query.next())
+	{
+		LastData.Name = query.value(0).toString();
+		LastData.Equation = query.value(1).toString();
+		LastData.Label = query.value(2).toString();
+		LastData.Active = query.value(3).toBool();
+		LastData.Style = query.value(4).toBool();
+		LastData.Minimum = query.value(5).toDouble();
+		LastData.Maximum = query.value(6).toDouble();
+	}
+	else	return false;
 
-	tLastData.Name = INI.value("Name", "Czujnik " + sSection).toString();
-	tLastData.Equation = INI.value("Equation", "x").toString();
-	tLastData.Label = INI.value("Label", "").toString();
-	tLastData.Minimum = INI.value("Minimum", 0).toInt();
-	tLastData.Maximum = INI.value("Maximum", 5).toInt();
-	tLastData.Active = INI.value("Active", false).toBool();
-	tLastData.Style = INI.value("Style", false).toBool();
+	SetData(LastData, true);
 
-	SetData(tLastData);
+	return true;
 }
 
-void SensorDialog::SaveSettings(const QString& sSection)
+bool SensorDialog::SaveSettings(void)
 {
-	if (!sSection.isEmpty()) sSensor = sSection;
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	QSettings INI("Sensors.ini", QSettings::IniFormat);
+	if (ID)
+		query.prepare("UPDATE sensors SET \
+				    name=:name, \
+				    expr=:expr, \
+				    type=:type, \
+				    active=:active, \
+				    style=:style, \
+				    min=:min, \
+				    max=:max \
+				    WHERE ID=:ID");
+	else
+		query.prepare("INSERT INTO sensors \
+				    (name, expr, type, active, style, min, max) \
+				    VALUES \
+				    (:name, :expr, :type, :active, :style, :min, :max)");
 
-	INI.setIniCodec("UTF-8");
-	INI.beginGroup(sSensor);
+	GetData(LastData);
 
-	GetData(tLastData);
+	query.bindValue(":name", LastData.Name);
+	query.bindValue(":expr", LastData.Equation);
+	query.bindValue(":type", LastData.Label);
+	query.bindValue(":active", LastData.Active);
+	query.bindValue(":style", LastData.Style);
+	query.bindValue(":min", LastData.Minimum);
+	query.bindValue(":max", LastData.Maximum);
+	query.bindValue(":ID", ID);
 
-	INI.setValue("Active", tLastData.Active);
-	INI.setValue("Equation", tLastData.Equation);
-	INI.setValue("Label", tLastData.Label);
-	INI.setValue("Maximum", tLastData.Maximum);
-	INI.setValue("Minimum", tLastData.Minimum);
-	INI.setValue("Name", tLastData.Name);
-	INI.setValue("Style", tLastData.Style);
+	if (!query.exec()) return false;
+
+	if (ID)
+		emit onSettingsAccept(LastData);
+	else
+		emit onSensorAdd(query.lastInsertId().toUInt());
+
+	return true;
+}
+
+bool SensorDialog::DeleteSettings(void)
+{
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
+	query.prepare("DELETE FROM sensors WHERE \
+			    ID=:ID");
+
+	query.bindValue(":ID", ID);
+
+	return query.exec();
 }
 
 void SensorDialog::GetData(SensorDialog::SensorData& tData)
@@ -81,6 +123,13 @@ void SensorDialog::SetData(SensorDialog::SensorData& tData, bool bRefresh)
 	if (bRefresh) emit onSettingsAccept(tData);
 }
 
+void SensorDialog::open(void)
+{
+	if (!ID) SetData(DefaultData, false);
+
+	QDialog::open();
+}
+
 void SensorDialog::accept(void)
 {
 	const QString& Equation = Interface->Equation->document()->toPlainText();
@@ -89,41 +138,31 @@ void SensorDialog::accept(void)
 
 	QScriptValue Result = Script.evaluate("x1=x2=x3=x4=x5=x6=1;" + Equation);
 
-	if (Equation.isEmpty())
+	if (Script.hasUncaughtException())
 	{
-		QMessageBox::warning(this,
-						 "Błąd",
-						 "Podaj równanie czujnika"
-						 );
+		QMessageBox::warning(
+					this,
+					"Błąd",
+					QString(
+						"Podane równanie zawiera błąd w linii %1\n\n\"%2\"")
+					.arg(Script.uncaughtExceptionLineNumber())
+					.arg(Result.toString()));
 	}
-	else if (Script.hasUncaughtException())
+	else if (!SaveSettings())
 	{
-		const QString sLine( QString::number(Script.uncaughtExceptionLineNumber()));
-		const QString sError(Result.toString());
-
-		QMessageBox::warning(this,
-						 "Błąd",
-						 "Podane równanie zawiera błąd w linii " + sLine + "\n\"" + sError + "\""
-						 );
-
+		QMessageBox::warning(
+					this,
+					"Błąd",
+					"Nie udało się zapisać rekordu w bazie danych");
 	}
-	else
-	{
-
-		QDialog::accept();
-
-		GetData(tLastData);
-
-		emit onSettingsAccept(tLastData);
-
-	}
+	else QDialog::accept();
 }
 
 void SensorDialog::reject(void)
 {
 	QDialog::reject();
 
-	SetData(tLastData, false);
+	SetData(LastData, false);
 }
 
 void SensorDialog::onParamsChange(void)

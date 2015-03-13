@@ -23,9 +23,6 @@
    <iconset resource="../common.qrc">
     <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
   </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -113,7 +110,7 @@
          <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <double>-20.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -133,7 +130,7 @@
          <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <double>20.000000000000000</double>
+         <double>5.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -195,8 +192,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>291</y>
+     <x>550</x>
+     <y>290</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -211,8 +208,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>291</y>
+     <x>550</x>
+     <y>290</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -227,8 +224,8 @@
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>226</x>
-     <y>173</y>
+     <x>541</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>536</x>
@@ -243,8 +240,8 @@
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>125</y>
+     <x>538</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -259,12 +256,28 @@
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>106</x>
-     <y>21</y>
+     <x>497</x>
+     <y>55</y>
     </hint>
     <hint type="destinationlabel">
      <x>493</x>
      <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Equation</sender>
+   <signal>textChanged()</signal>
+   <receiver>SensorDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>346</y>
     </hint>
    </hints>
   </connection>

@@ -3,20 +3,26 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 	class EventDialog;
 }
 
 class EventDialog : public QDialog
 {
+
 		Q_OBJECT
 
 	public:
-		explicit EventDialog(QWidget *parent = 0);
+		EventDialog(QWidget* parent,
+				  unsigned char uID);
 		~EventDialog();
 
 	private:
-		Ui::EventDialog *ui;
+
+		const unsigned char ID;
+
+		Ui::EventDialog* Interface;
 };
 
 #endif // EVENTDIALOG_HPP

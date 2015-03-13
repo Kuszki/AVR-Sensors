@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>550</height>
+    <width>450</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>550</height>
+    <width>450</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -537,8 +537,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>337</y>
+     <x>370</x>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
      <x>512</x>
@@ -553,8 +553,8 @@
    <slot>UpdateDevices()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>191</y>
+     <x>370</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
      <x>473</x>
@@ -569,8 +569,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>228</y>
+     <x>370</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>645</x>
@@ -585,12 +585,60 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>228</y>
+     <x>279</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
      <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddSensor</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddWidget()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>316</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddEvent</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddWidget()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>357</x>
+     <y>340</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddDevice</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddWidget()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>386</y>
     </hint>
    </hints>
   </connection>
@@ -599,5 +647,6 @@
   <slot>UpdateDevices()</slot>
   <slot>UpdateLink()</slot>
   <slot>UpdateCount(int)</slot>
+  <slot>AddWidget()</slot>
  </slots>
 </ui>

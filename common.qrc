@@ -6,4 +6,7 @@
         <file alias="icon_event">resources/icon-event.png</file>
         <file alias="icon_device">resources/icon-device.png</file>
     </qresource>
+    <qresource prefix="/data">
+        <file alias="database">AVR-Sensors.sqlite</file>
+    </qresource>
 </RCC>

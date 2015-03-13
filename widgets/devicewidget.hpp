@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "windows/devicedialog.hpp"
+
 namespace Ui {
 	class DeviceWidget;
 }

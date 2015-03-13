@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QScriptEngine>
 #include <QMessageBox>
+#include <QtSql>
 
 namespace Ui
 {
@@ -35,37 +36,40 @@ class SensorDialog : public QDialog
 
 	private:
 
+		const unsigned char ID;
+
 		Ui::SensorDialog* Interface;
 
-		SensorData tLastData;
+		SensorDialog::SensorData DefaultData;
+		SensorDialog::SensorData LastData;
 
-		QString sSensor;
+		void GetData(SensorDialog::SensorData& tData);
+		void SetData(SensorDialog::SensorData& tData,
+				   bool bRefresh);
 
 	public:
 
-		explicit SensorDialog(QWidget* parent = nullptr);
+		SensorDialog(QWidget* parent,
+				   unsigned char uID);
 		~SensorDialog();
 
-		void LoadSettings(const QString& sSection = QString());
+		bool LoadSettings(void);
+		bool SaveSettings(void);
+		bool DeleteSettings(void);
 
-		void SaveSettings(const QString& sSection = QString());
-
-		void GetData(SensorDialog::SensorData& tData);
-
-		void SetData(SensorDialog::SensorData& tData,
-				   bool bRefresh = true);
-
-		void accept(void);
-
-		void reject(void);
+		void open(void);
 
 	private slots:
+
+		void accept(void);
+		void reject(void);
 
 		void onParamsChange(void);
 
 	signals:
 
 		void onSettingsAccept(const SensorDialog::SensorData& tData);
+		void onSensorAdd(unsigned char uID);
 
 };
 

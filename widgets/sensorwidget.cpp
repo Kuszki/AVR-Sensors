@@ -1,32 +1,37 @@
 #include "sensorwidget.hpp"
 #include "ui_sensorwidget.h"
 
-SensorWidget::SensorWidget(QWidget *parent, int ID)
-: QWidget(parent), Interface(new Ui::SensorWidget)
+#include "windows/mainwindow.hpp"
+
+SensorWidget::SensorWidget(QWidget *parent, unsigned char uID)
+: QWidget(parent), ID(uID), Interface(new Ui::SensorWidget)
 {
 	Interface->setupUi(this);
 
-	dDialog = new SensorDialog(this);
+	Dialog = new SensorDialog(this, ID);
 
-	connect(dDialog, SIGNAL(onSettingsAccept(const SensorDialog::SensorData&)),
+	connect(Dialog,
+		   SIGNAL(onSettingsAccept(const SensorDialog::SensorData&)),
 		   SLOT(onDialogSave(const SensorDialog::SensorData&)));
 
-	dDialog->LoadSettings(QString::number(ID));
+	connect(parent,
+		   SIGNAL(onRefresh(QScriptEngine&)),
+		   SLOT(onUpdateValue(QScriptEngine&)));
 
-	connect(parent, SIGNAL(onRefresh(QScriptEngine*)), SLOT(onUpdateValue(QScriptEngine*)));
+	Dialog->LoadSettings();
 }
 
 SensorWidget::~SensorWidget()
 {
+	delete Dialog;
 	delete Interface;
-	delete dDialog;
 }
 
-void SensorWidget::onUpdateValue(QScriptEngine* Engine)
+void SensorWidget::onUpdateValue(QScriptEngine& Engine)
 {
-	if (bActive)
+	if (Active)
 	{
-		float fValue = Engine->evaluate(Equation).toNumber();
+		float fValue = Engine.evaluate(Equation).toNumber();
 
 		Interface->Progress->setValue(fValue);
 		Interface->Value->display(fValue);
@@ -37,14 +42,29 @@ void SensorWidget::onUpdateValue(QScriptEngine* Engine)
 
 void SensorWidget::onOptionsClick(void)
 {
-	dDialog->open();
+	Dialog->open();
+}
+
+void SensorWidget::onDeleteClick(void)
+{
+
+	if (QMessageBox::Yes == QMessageBox::question(
+		    this,
+		    "Usuń sensor",
+		    "Czy chcesz bezpowrotnie usunąć ten sensor?",
+		    QMessageBox::Yes|QMessageBox::No))
+	{
+		Dialog->DeleteSettings();
+
+		emit onWidgetDelete(ID, TYPE_SENSOR);
+	}
 }
 
 void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 {
-	bActive = tData.Active;
+	Active = tData.Active;
 
-	if (!bActive)
+	if (!Active)
 	{
 		Interface->Progress->setValue(0);
 		Interface->Value->display(0);

@@ -141,16 +141,10 @@
    <item>
     <widget class="QLabel" name="Desc">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>75</width>
-       <height>0</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -173,7 +167,9 @@
    <item>
     <widget class="QToolButton" name="Delete">
      <property name="icon">
-      <iconset theme="list-remove"/>
+      <iconset theme="list-remove">
+       <normaloff/>
+      </iconset>
      </property>
     </widget>
    </item>
@@ -190,8 +186,8 @@
    <slot>onOptionsClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>380</x>
-     <y>26</y>
+     <x>519</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
      <x>504</x>
@@ -199,8 +195,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Delete</sender>
+   <signal>clicked()</signal>
+   <receiver>SensorWidget</receiver>
+   <slot>onDeleteClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>536</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>547</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOptionsClick()</slot>
+  <slot>onDeleteClick()</slot>
  </slots>
 </ui>

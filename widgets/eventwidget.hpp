@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "windows/eventdialog.hpp"
+
 namespace Ui
 {
 	class EventWidget;
