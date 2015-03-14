@@ -2,23 +2,46 @@
 #define DEVICEWIDGET_HPP
 
 #include <QWidget>
+#include <QScriptEngine>
+#include <QRegularExpression>
+#include <QDebug>
 
 #include "windows/devicedialog.hpp"
 
-namespace Ui {
+namespace Ui
+{
 	class DeviceWidget;
 }
 
 class DeviceWidget : public QWidget
 {
+
 		Q_OBJECT
 
+	private:
+
+		const unsigned char ID;
+
+		Ui::DeviceWidget* Interface;
+
+		DeviceDialog* Dialog;
+
 	public:
-		explicit DeviceWidget(QWidget *parent = 0);
+
+		DeviceWidget(QWidget* parent, unsigned char uID);
 		~DeviceWidget();
 
-	private:
-		Ui::DeviceWidget *ui;
+	public slots:
+
+		void onOptionsClick(void);
+		void onDeleteClick(void);
+		void onDialogSave(const DeviceDialog::DeviceData& tData);
+
+	signals:
+
+		void onWidgetDelete(unsigned char uID,
+						unsigned char uWT);
+
 };
 
 #endif // DEVICEWIDGET_HPP

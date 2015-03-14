@@ -20,7 +20,7 @@
    <string>Opcje urządzenia</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="common.qrc">
+   <iconset resource="../common.qrc">
     <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -59,7 +59,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="Active">
      <item>
       <property name="text">
        <string>Wyłączony</string>
@@ -85,7 +85,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="common.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -120,5 +120,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Name</sender>
+   <signal>editingFinished()</signal>
+   <receiver>DeviceDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>366</x>
+     <y>24</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>onParamsChange()</slot>
+ </slots>
 </ui>

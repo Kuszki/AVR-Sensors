@@ -54,9 +54,11 @@ void SensorWidget::onDeleteClick(void)
 		    "Czy chcesz bezpowrotnie usunąć ten sensor?",
 		    QMessageBox::Yes|QMessageBox::No))
 	{
-		Dialog->DeleteSettings();
-
-		emit onWidgetDelete(ID, TYPE_SENSOR);
+		if (Dialog->DeleteSettings()) emit onWidgetDelete(ID, TYPE_SENSOR);
+		else QMessageBox::warning(
+					this,
+					"Błąd",
+					"Nie udało się usunąć sensora");
 	}
 }
 

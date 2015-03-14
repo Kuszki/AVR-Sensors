@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
 	Interface->setupUi(this);
 
 	DialogAddSensor = new SensorDialog(this, 0);
+	DialogAddEvent = new EventDialog(this, 0);
+	DialogAddDevice = new DeviceDialog(this, 0);
 
 	Database = QSqlDatabase::addDatabase("QSQLITE");
 
@@ -48,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent)
 	if (Query.exec("SELECT ID FROM sensors"))
 		while (Query.next()) AddSensor(Query.value(0).toUInt());
 
+	if (Query.exec("SELECT ID FROM events"))
+		while (Query.next()) AddEvent(Query.value(0).toUInt());
+
+	if (Query.exec("SELECT ID FROM targets"))
+		while (Query.next()) AddDevice(Query.value(0).toUInt());
+
 	UpdateDevices();
 
 	connect(&Serial,
@@ -55,8 +63,16 @@ MainWindow::MainWindow(QWidget *parent)
 		   SLOT(UpdatehData()));
 
 	connect(DialogAddSensor,
-		   SIGNAL(onSensorAdd(unsigned char)),
+		   SIGNAL(onWidgetAdd(unsigned char)),
 		   SLOT(AddSensor(unsigned char)));
+
+	connect(DialogAddEvent,
+		   SIGNAL(onWidgetAdd(unsigned char)),
+		   SLOT(AddEvent(unsigned char)));
+
+	connect(DialogAddDevice,
+		   SIGNAL(onWidgetAdd(unsigned char)),
+		   SLOT(AddDevice(unsigned char)));
 }
 
 MainWindow::~MainWindow()
@@ -64,6 +80,8 @@ MainWindow::~MainWindow()
 	Disconnect();
 
 	foreach (SensorWidget* widget, Sensors) delete widget;
+	foreach (EventWidget* widget, Events) delete widget;
+	foreach (DeviceWidget* widget, Devices) delete widget;
 
 	QSettings INI("Sensors.ini", QSettings::IniFormat);
 
@@ -73,6 +91,10 @@ MainWindow::~MainWindow()
 
 	INI.setValue("Active", Interface->Active->isChecked());
 	INI.setValue("Time", Interface->Time->value());
+
+	delete DialogAddSensor;
+	delete DialogAddEvent;
+	delete DialogAddDevice;
 
 	delete Interface;
 }
@@ -107,15 +129,15 @@ void MainWindow::AddWidget(void)
 {
 	if (sender() == Interface->AddSensor)
 	{
-		DialogAddSensor->show();
+		DialogAddSensor->open();
 	}
 	else if (sender() == Interface->AddEvent)
 	{
-		//DialogAddEvent->show();
+		DialogAddEvent->open();
 	}
 	else if (sender() == Interface->AddDevice)
 	{
-		//DialogAddDevice->show();
+		DialogAddDevice->open();
 	}
 }
 
@@ -160,12 +182,28 @@ void MainWindow::AddSensor(unsigned char ID)
 
 void MainWindow::AddEvent(unsigned char ID)
 {
-	qDebug() << "added event id =" << ID;
+	EventWidget* widget = new EventWidget(this, ID);
+
+	Events.insert(ID, widget);
+
+	Interface->layoutEvents->addWidget(widget);
+
+	connect(widget,
+		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
+		   SLOT(DeleteWidget(unsigned char,unsigned char)));
 }
 
 void MainWindow::AddDevice(unsigned char ID)
 {
-	qDebug() << "added device id =" << ID;
+	DeviceWidget* widget = new DeviceWidget(this, ID);
+
+	Devices.insert(ID, widget);
+
+	Interface->layoutDevices->addWidget(widget);
+
+	connect(widget,
+		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
+		   SLOT(DeleteWidget(unsigned char,unsigned char)));
 }
 
 void MainWindow::UpdateDevices(void)

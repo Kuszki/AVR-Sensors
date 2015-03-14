@@ -18,11 +18,6 @@ class SensorWidget : public QWidget
 
 		Q_OBJECT
 
-	public:
-
-		SensorWidget(QWidget* parent, unsigned char uID);
-		~SensorWidget();
-
 	private:
 
 		const unsigned char ID;
@@ -33,6 +28,11 @@ class SensorWidget : public QWidget
 
 		QString Equation;
 		bool Active = false;
+
+	public:
+
+		SensorWidget(QWidget* parent, unsigned char uID);
+		~SensorWidget();
 
 	public slots:
 

@@ -40,11 +40,11 @@ class SensorDialog : public QDialog
 
 		Ui::SensorDialog* Interface;
 
-		SensorDialog::SensorData DefaultData;
-		SensorDialog::SensorData LastData;
+		SensorData DefaultData;
+		SensorData LastData;
 
-		void GetData(SensorDialog::SensorData& tData);
-		void SetData(SensorDialog::SensorData& tData,
+		void GetData(SensorData& tData);
+		void SetData(SensorData& tData,
 				   bool bRefresh);
 
 	public:
@@ -69,7 +69,7 @@ class SensorDialog : public QDialog
 	signals:
 
 		void onSettingsAccept(const SensorDialog::SensorData& tData);
-		void onSensorAdd(unsigned char uID);
+		void onWidgetAdd(unsigned char uID);
 
 };
 

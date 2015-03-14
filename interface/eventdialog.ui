@@ -20,7 +20,7 @@
    <string>Opcje zdarzenia</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="common.qrc">
+   <iconset resource="../common.qrc">
     <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -42,7 +42,13 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QComboBox" name="Sensor"/>
+    <widget class="QComboBox" name="Sensor">
+     <item>
+      <property name="text">
+       <string>SENSOR</string>
+      </property>
+     </item>
+    </widget>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="labelValue">
@@ -52,7 +58,32 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QDoubleSpinBox" name="Value"/>
+    <layout class="QHBoxLayout" name="layoutConditions">
+     <item>
+      <widget class="QComboBox" name="Where">
+       <item>
+        <property name="text">
+         <string>Mniejsza</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Większa</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="Value">
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="labelAction">
@@ -83,7 +114,13 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QComboBox" name="Device"/>
+    <widget class="QComboBox" name="Device">
+     <item>
+      <property name="text">
+       <string>DEVICE</string>
+      </property>
+     </item>
+    </widget>
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="labelActive">
@@ -112,7 +149,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="common.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>

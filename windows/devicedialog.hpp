@@ -2,6 +2,12 @@
 #define DEVICEDIALOG_HPP
 
 #include <QDialog>
+#include <QSettings>
+#include <QDebug>
+#include <QPushButton>
+#include <QScriptEngine>
+#include <QMessageBox>
+#include <QtSql>
 
 namespace Ui {
 	class DeviceDialog;
@@ -9,14 +15,54 @@ namespace Ui {
 
 class DeviceDialog : public QDialog
 {
+
 		Q_OBJECT
 
 	public:
-		explicit DeviceDialog(QWidget *parent = 0);
-		~DeviceDialog();
+
+		struct DeviceData
+		{
+			QString Name;
+
+			unsigned Pin;
+
+			bool Active;
+		};
 
 	private:
-		Ui::DeviceDialog *ui;
+
+		const unsigned char ID;
+
+		Ui::DeviceDialog* Interface;
+
+		DeviceData DefaultData;
+		DeviceData LastData;
+
+		void GetData(DeviceData& tData);
+		void SetData(DeviceData& tData,
+				   bool bRefresh);
+
+	public:
+		DeviceDialog(QWidget* parent, unsigned char uID);
+		~DeviceDialog();
+
+		bool LoadSettings(void);
+		bool SaveSettings(void);
+		bool DeleteSettings(void);
+
+		void open(void);
+
+	private slots:
+
+		void accept(void);
+		void reject(void);
+
+		void onParamsChange(void);
+
+	signals:
+
+		void onSettingsAccept(const DeviceDialog::DeviceData& tData);
+		void onWidgetAdd(unsigned char uID);
 };
 
 #endif // DEVICEDIALOG_HPP

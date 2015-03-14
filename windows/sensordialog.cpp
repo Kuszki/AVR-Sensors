@@ -49,21 +49,21 @@ bool SensorDialog::SaveSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	if (ID)
-		query.prepare("UPDATE sensors SET \
-				    name=:name, \
-				    expr=:expr, \
-				    type=:type, \
-				    active=:active, \
-				    style=:style, \
-				    min=:min, \
-				    max=:max \
-				    WHERE ID=:ID");
-	else
-		query.prepare("INSERT INTO sensors \
-				    (name, expr, type, active, style, min, max) \
-				    VALUES \
-				    (:name, :expr, :type, :active, :style, :min, :max)");
+	if (ID) query.prepare(
+				"UPDATE sensors SET \
+				name=:name, \
+				expr=:expr, \
+				type=:type, \
+				active=:active, \
+				style=:style, \
+				min=:min, \
+				max=:max \
+				WHERE ID=:ID");
+	else	query.prepare(
+				"INSERT INTO sensors \
+				(name, expr, type, active, style, min, max) \
+				VALUES \
+				(:name, :expr, :type, :active, :style, :min, :max)");
 
 	GetData(LastData);
 
@@ -81,7 +81,7 @@ bool SensorDialog::SaveSettings(void)
 	if (ID)
 		emit onSettingsAccept(LastData);
 	else
-		emit onSensorAdd(query.lastInsertId().toUInt());
+		emit onWidgetAdd(query.lastInsertId().toUInt());
 
 	return true;
 }
@@ -89,6 +89,15 @@ bool SensorDialog::SaveSettings(void)
 bool SensorDialog::DeleteSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
+	query.prepare("SELECT \
+			    count(ID) \
+			    FROM events WHERE \
+			    SENSOR_ID=:ID");
+
+	query.bindValue(":ID", ID);
+
+	if (!query.exec() || (query.next() && query.value(0).toBool())) return false;
 
 	query.prepare("DELETE FROM sensors WHERE \
 			    ID=:ID");
@@ -98,7 +107,7 @@ bool SensorDialog::DeleteSettings(void)
 	return query.exec();
 }
 
-void SensorDialog::GetData(SensorDialog::SensorData& tData)
+void SensorDialog::GetData(SensorData& tData)
 {
 	tData.Name = Interface->Name->text();
 	tData.Equation = Interface->Equation->document()->toPlainText();
@@ -109,7 +118,7 @@ void SensorDialog::GetData(SensorDialog::SensorData& tData)
 	tData.Style = Interface->StyleBar->isChecked();
 }
 
-void SensorDialog::SetData(SensorDialog::SensorData& tData, bool bRefresh)
+void SensorDialog::SetData(SensorData& tData, bool bRefresh)
 {
 	Interface->Name->setText(tData.Name);
 	Interface->Equation->document()->setPlainText(tData.Equation);
@@ -138,23 +147,16 @@ void SensorDialog::accept(void)
 
 	QScriptValue Result = Script.evaluate("x1=x2=x3=x4=x5=x6=1;" + Equation);
 
-	if (Script.hasUncaughtException())
-	{
-		QMessageBox::warning(
-					this,
-					"Błąd",
-					QString(
-						"Podane równanie zawiera błąd w linii %1\n\n\"%2\"")
-					.arg(Script.uncaughtExceptionLineNumber())
-					.arg(Result.toString()));
-	}
-	else if (!SaveSettings())
-	{
-		QMessageBox::warning(
-					this,
-					"Błąd",
-					"Nie udało się zapisać rekordu w bazie danych");
-	}
+	if (Script.hasUncaughtException()) QMessageBox::warning(
+				this,
+				"Błąd",
+				QString("Podane równanie zawiera błąd w linii %1\n\n\"%2\"")
+				.arg(Script.uncaughtExceptionLineNumber())
+				.arg(Result.toString()));
+	else if (!SaveSettings()) QMessageBox::warning(
+				this,
+				"Błąd",
+				"Nie udało się zapisać rekordu w bazie danych");
 	else QDialog::accept();
 }
 
