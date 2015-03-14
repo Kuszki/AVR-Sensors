@@ -39,6 +39,7 @@ class DeviceWidget : public QWidget
 
 	signals:
 
+		void onDataChange(void);
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 

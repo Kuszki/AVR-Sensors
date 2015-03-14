@@ -43,6 +43,7 @@ class SensorWidget : public QWidget
 
 	signals:
 
+		void onDataChange(void);
 		void onValueChange(float fValue);
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);

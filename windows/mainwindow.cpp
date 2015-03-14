@@ -178,6 +178,10 @@ void MainWindow::AddSensor(unsigned char ID)
 	connect(widget,
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
+
+	connect(widget,
+		   SIGNAL(onDataChange()),
+		   SLOT(UpdateEvents()));
 }
 
 void MainWindow::AddEvent(unsigned char ID)
@@ -204,6 +208,15 @@ void MainWindow::AddDevice(unsigned char ID)
 	connect(widget,
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
+
+	connect(widget,
+		   SIGNAL(onDataChange()),
+		   SLOT(UpdateEvents()));
+}
+
+void MainWindow::UpdateEvents(void)
+{
+	foreach (EventWidget* widget, Events) widget->onUpdateData();
 }
 
 void MainWindow::UpdateDevices(void)

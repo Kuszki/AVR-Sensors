@@ -75,6 +75,8 @@ class MainWindow : public QMainWindow
 		void AddEvent(unsigned char ID);
 		void AddDevice(unsigned char ID);
 
+		void UpdateEvents(void);
+
 		void UpdateDevices(void);
 		void UpdateLink(void);
 		void UpdatehData(void);

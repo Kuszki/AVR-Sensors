@@ -49,4 +49,6 @@ void DeviceWidget::onDialogSave(const DeviceDialog::DeviceData& tData)
 	Interface->Name->setText(tData.Name);
 	Interface->Enabled->setChecked(tData.Active);
 	Interface->Pin->setText(QString::number(tData.Pin));
+
+	emit onDataChange();
 }

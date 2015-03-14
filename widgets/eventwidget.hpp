@@ -33,6 +33,7 @@ class EventWidget : public QWidget
 
 	public slots:
 
+		void onUpdateData(void);
 		void onOptionsClick(void);
 		void onDeleteClick(void);
 		void onDialogSave(const EventDialog::EventData& tData);

@@ -89,4 +89,6 @@ void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 	Interface->Label->setSizePolicy(tData.Active ? QSizePolicy::Preferred : QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	Equation = tData.Equation;
+
+	emit onDataChange();
 }

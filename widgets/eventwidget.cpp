@@ -23,6 +23,11 @@ EventWidget::~EventWidget()
 	delete Interface;
 }
 
+void EventWidget::onUpdateData(void)
+{
+	Dialog->LoadSettings();
+}
+
 void EventWidget::onOptionsClick(void)
 {
 	Dialog->open();
