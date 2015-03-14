@@ -41,13 +41,13 @@ void EventWidget::onDeleteClick(void)
 		    "Usuń sensor",
 		    "Czy chcesz bezpowrotnie usunąć to zdarzenie?",
 		    QMessageBox::Yes|QMessageBox::No))
-	{
-		if (Dialog->DeleteSettings()) emit onWidgetDelete(ID, TYPE_EVENT);
-		else QMessageBox::warning(
-					this,
-					"Błąd",
-					"Nie udało się usunąć zdarzenia");
-	}
+
+	if (Dialog->DeleteSettings()) emit onWidgetDelete(ID, TYPE_EVENT);
+
+	else QMessageBox::warning(
+				this,
+				"Błąd",
+				"Nie udało się usunąć zdarzenia");
 }
 
 void EventWidget::onDialogSave(const EventDialog::EventData& tData)
@@ -61,7 +61,7 @@ void EventWidget::onDialogSave(const EventDialog::EventData& tData)
 				.arg(tData.Sensor)
 				.arg(tData.Device));
 	Interface->Desc->setToolTip(
-				QString("%1 %2 gdy wartość %3 %4 od %5")
+				QString("%1 %2 gdy wartość będzie %3 %4 od %5")
 				.arg(tData.Action ? "Włącz" : "Wyłącz")
 				.arg(tData.Device)
 				.arg(tData.Sensor)
