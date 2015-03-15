@@ -15,8 +15,12 @@ SensorWidget::SensorWidget(QWidget *parent, unsigned char uID)
 		   SLOT(onDialogSave(const SensorDialog::SensorData&)));
 
 	connect(parent,
-		   SIGNAL(onRefresh(QScriptEngine&)),
+		   SIGNAL(onRefreshValues(QScriptEngine&)),
 		   SLOT(onUpdateValue(QScriptEngine&)));
+
+	connect(parent,
+		   SIGNAL(onSampleUpdate(bool, unsigned)),
+		   SLOT(onUpdateSample(bool, unsigned)));
 
 	Dialog->LoadSettings();
 }
@@ -27,16 +31,43 @@ SensorWidget::~SensorWidget()
 	delete Interface;
 }
 
+void SensorWidget::onUpdateSample(bool bActive, unsigned uSamples)
+{
+	if (Samples.pfSamples) delete [] Samples.pfSamples;
+
+	if (bActive)
+	{
+		Samples.pfSamples = new double[uSamples];
+
+		Samples.uSamples = uSamples;
+	}
+	else
+	{
+		Samples.pfSamples = nullptr;
+
+		Samples.uSamples = 0;
+	}
+
+	Samples.uCurrent = 0;
+}
+
 void SensorWidget::onUpdateValue(QScriptEngine& Engine)
 {
-	if (Active)
+	if (Data.Active)
 	{
-		float fValue = Engine.evaluate(Equation).toNumber();
+		double fValue = Engine.evaluate(Data.Equation).toNumber();
 
-		Interface->Progress->setValue(fValue);
-		Interface->Value->display(fValue);
+		if (Samples.uSamples == Samples.uCurrent)
+		{
+			if (Samples.uSamples) fValue = AVG(Samples);
 
-		emit onValueChange(fValue);
+			Interface->Progress->setValue(fValue);
+			Interface->Value->display(fValue);
+		}
+		else
+		{
+			Samples.pfSamples[Samples.uCurrent++] = fValue;
+		}
 	}
 }
 
@@ -64,9 +95,9 @@ void SensorWidget::onDeleteClick(void)
 
 void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 {
-	Active = tData.Active;
+	Data.Active = tData.Active;
 
-	if (!Active)
+	if (!Data.Active)
 	{
 		Interface->Progress->setValue(0);
 		Interface->Value->display(0);
@@ -88,7 +119,18 @@ void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 
 	Interface->Label->setSizePolicy(tData.Active ? QSizePolicy::Preferred : QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-	Equation = tData.Equation;
+	Data.Equation = tData.Equation;
 
 	emit onDataChange();
+}
+
+double SensorWidget::AVG(Measure& tData)
+{
+	double Buff = 0.0;
+
+	for (int i = 0; i < tData.uSamples; i++) Buff += tData.pfSamples[i];
+
+	tData.uCurrent = 0;
+
+	return Buff / tData.uSamples;
 }

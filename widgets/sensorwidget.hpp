@@ -20,22 +20,40 @@ class SensorWidget : public QWidget
 
 	private:
 
+		struct Measure
+		{
+			unsigned uSamples = 0;
+			unsigned uCurrent = 0;
+
+			double* pfSamples = nullptr;
+		};
+
+		struct Sensor
+		{
+			QString Equation;
+
+			bool Active = false;
+		};
+
 		const unsigned char ID;
 
 		Ui::SensorWidget* Interface;
 
 		SensorDialog* Dialog;
 
-		QString Equation;
-		bool Active = false;
+		Measure Samples;
+		Sensor Data;
 
 	public:
 
 		SensorWidget(QWidget* parent, unsigned char uID);
 		~SensorWidget();
 
+		static double AVG(Measure& tData);
+
 	public slots:
 
+		void onUpdateSample(bool bActive, unsigned uSamples);
 		void onUpdateValue(QScriptEngine& Engine);
 		void onOptionsClick(void);
 		void onDeleteClick(void);
@@ -44,7 +62,6 @@ class SensorWidget : public QWidget
 	signals:
 
 		void onDataChange(void);
-		void onValueChange(float fValue);
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 

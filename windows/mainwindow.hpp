@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #define FRAME_SIZE 12
+#define SIGNAL_SIZE 5
 
 #define TYPE_SENSOR 1
 #define TYPE_EVENT 2
@@ -77,13 +78,15 @@ class MainWindow : public QMainWindow
 
 		void UpdateEvents(void);
 
+		void UpdateMeasurements(void);
 		void UpdateDevices(void);
 		void UpdateLink(void);
 		void UpdatehData(void);
 
 	signals:
 
-		void onRefresh(QScriptEngine& Engine);
+		void onRefreshValues(QScriptEngine& Engine);
+		void onSampleUpdate(bool bActive, unsigned uSamples);
 
 };
 

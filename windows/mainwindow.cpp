@@ -30,6 +30,11 @@ MainWindow::MainWindow(QWidget *parent)
 	Interface->Active->setChecked(INI.value("Active", false).toBool());
 	Interface->Time->setValue(INI.value("Time", 3.0).toDouble());
 
+	INI.beginGroup("Measurements");
+
+	Interface->Average->setChecked(INI.value("Average", false).toBool());
+	Interface->Samples->setValue(INI.value("Samples", 10).toUInt());
+
 	INI.beginGroup("Database");
 
 	const QString dbPath = INI.value("Path", QDir::currentPath() + QDir::separator() + "database.sqlite").toString();
@@ -44,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 	Database.setDatabaseName(dbPath);
 	Database.open();
+
+	if (Database.isOpenError()) qFatal("Nie można połączyć się z bazą danych");
 
 	QSqlQuery Query(Database);
 
@@ -92,6 +99,11 @@ MainWindow::~MainWindow()
 	INI.setValue("Active", Interface->Active->isChecked());
 	INI.setValue("Time", Interface->Time->value());
 
+	INI.beginGroup("Measurements");
+
+	INI.setValue("Average", Interface->Average->isChecked());
+	INI.setValue("Samples", Interface->Samples->value());
+
 	delete DialogAddSensor;
 	delete DialogAddEvent;
 	delete DialogAddDevice;
@@ -115,7 +127,7 @@ void MainWindow::Disconnect(void)
 {
 	if (Serial.isOpen())
 	{
-		Serial.write("\0\0\0", 3);
+		Serial.write("\0\0\0\0\0", SIGNAL_SIZE);
 		Serial.flush();
 
 		Serial.close();
@@ -175,6 +187,9 @@ void MainWindow::AddSensor(unsigned char ID)
 
 	Interface->layoutSensors->addWidget(widget);
 
+	widget->onUpdateSample(Interface->Average->isChecked(),
+					   Interface->Samples->value());
+
 	connect(widget,
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
@@ -212,11 +227,18 @@ void MainWindow::AddDevice(unsigned char ID)
 	connect(widget,
 		   SIGNAL(onDataChange()),
 		   SLOT(UpdateEvents()));
+
 }
 
 void MainWindow::UpdateEvents(void)
 {
 	foreach (EventWidget* widget, Events) widget->onUpdateData();
+}
+
+void MainWindow::UpdateMeasurements(void)
+{
+	emit onSampleUpdate(Interface->Average->isChecked(),
+					Interface->Samples->value());
 }
 
 void MainWindow::UpdateDevices(void)
@@ -247,15 +269,15 @@ void MainWindow::UpdateLink(void)
 	{
 		if (Serial.isOpen())
 		{
+			unsigned char Frame[SIGNAL_SIZE];
+
 			unsigned Time = (Interface->Time->value() * 65535) / 4.19424;
 
-			unsigned char Frame[] = {
-				Interface->Active->isChecked(),
-				(unsigned char) Time,
-				(unsigned char) (Time >> 8)
-			};
+			Frame[0] = Interface->Active->isChecked();
+			Frame[1] = (unsigned char) Time;
+			Frame[2] = (unsigned char) (Time >> 8);
 
-			Serial.write((char*) Frame, 3);
+			Serial.write((char*) Frame, SIGNAL_SIZE);
 		}
 	}
 }
@@ -275,7 +297,7 @@ void MainWindow::UpdatehData(void)
 					((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0));
 	}
 
-	emit onRefresh(Engine);
+	emit onRefreshValues(Engine);
 }
 
 QSqlDatabase& MainWindow::getDatabase(void)

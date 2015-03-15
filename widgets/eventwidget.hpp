@@ -18,6 +18,16 @@ class EventWidget : public QWidget
 
 		Q_OBJECT
 
+	public:
+
+		struct EventBinary
+		{
+			unsigned char Pin;
+			unsigned char When;
+
+			unsigned short Value;
+		};
+
 	private:
 
 		const unsigned char ID;
@@ -31,6 +41,8 @@ class EventWidget : public QWidget
 		explicit EventWidget(QWidget* parent, unsigned char uID);
 		~EventWidget();
 
+		const EventBinary& getEvent(void);
+
 	public slots:
 
 		void onUpdateData(void);
@@ -40,6 +52,7 @@ class EventWidget : public QWidget
 
 	signals:
 
+		void onDataChange(void);
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 
