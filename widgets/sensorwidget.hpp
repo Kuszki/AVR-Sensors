@@ -51,13 +51,16 @@ class SensorWidget : public QWidget
 
 		static double AVG(Measure& tData);
 
+	private slots:
+
+		void onOptionsClick(void);
+		void onDeleteClick(void);
+		void onDialogSave(const SensorDialog::SensorData& tData);
+
 	public slots:
 
 		void onUpdateSample(bool bActive, unsigned uSamples);
 		void onUpdateValue(QScriptEngine& Engine);
-		void onOptionsClick(void);
-		void onDeleteClick(void);
-		void onDialogSave(const SensorDialog::SensorData& tData);
 
 	signals:
 

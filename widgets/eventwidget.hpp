@@ -43,12 +43,15 @@ class EventWidget : public QWidget
 
 		const EventBinary& getEvent(void);
 
-	public slots:
+	private slots:
 
-		void onUpdateData(void);
 		void onOptionsClick(void);
 		void onDeleteClick(void);
 		void onDialogSave(const EventDialog::EventData& tData);
+
+	public slots:
+
+		void onUpdateData(void);
 
 	signals:
 

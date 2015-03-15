@@ -8,6 +8,11 @@
 #define TYPE_EVENT 2
 #define TYPE_DEVICE 3
 
+#define SIGNAL_STOP 0
+#define SIGNAL_START 1
+#define SIGNAL_CONTROL 3
+#define SIGNAL_MANUAL 4
+
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
@@ -78,13 +83,18 @@ class MainWindow : public QMainWindow
 
 		void UpdateEvents(void);
 
+		void UpdateControl(void);
 		void UpdateMeasurements(void);
 		void UpdateDevices(void);
 		void UpdateLink(void);
 		void UpdatehData(void);
 
+		void SwitchDevice(unsigned char uPin,
+					   bool bState);
+
 	signals:
 
+		void onControlChange(bool bLock);
 		void onRefreshValues(QScriptEngine& Engine);
 		void onSampleUpdate(bool bActive, unsigned uSamples);
 

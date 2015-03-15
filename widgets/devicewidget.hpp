@@ -26,20 +26,32 @@ class DeviceWidget : public QWidget
 
 		DeviceDialog* Dialog;
 
+		unsigned char uPin = 0;
+		bool bInitialSwitch = false;
+
 	public:
 
 		DeviceWidget(QWidget* parent, unsigned char uID);
 		~DeviceWidget();
 
-	public slots:
+	private slots:
+
+		void onActiveSwitch(bool bMode);
 
 		void onOptionsClick(void);
 		void onDeleteClick(void);
+
 		void onDialogSave(const DeviceDialog::DeviceData& tData);
+
+	public slots:
+
+		void onChangeControl(bool bLock);
 
 	signals:
 
 		void onDataChange(void);
+		void onManualSwitch(unsigned char uDev,
+						bool bState);
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 

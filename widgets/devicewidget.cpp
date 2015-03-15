@@ -14,12 +14,29 @@ DeviceWidget::DeviceWidget(QWidget* parent, unsigned char uID)
 		   SIGNAL(onSettingsAccept(const DeviceDialog::DeviceData&)),
 		   SLOT(onDialogSave(const DeviceDialog::DeviceData&)));
 
+	connect(parent,
+		   SIGNAL(onControlChange(bool)),
+		   SLOT(onChangeControl(bool)));
+
 	Dialog->LoadSettings();
 }
 
 DeviceWidget::~DeviceWidget()
 {
 	delete Interface;
+}
+
+void DeviceWidget::onActiveSwitch(bool bMode)
+{
+	emit onManualSwitch(uPin, bMode);
+}
+
+void DeviceWidget::onChangeControl(bool bManual)
+{
+	Interface->Enabled->setEnabled(bManual);
+
+	if (bManual)
+		emit onManualSwitch(uPin, Interface->Enabled->isChecked());
 }
 
 void DeviceWidget::onOptionsClick(void)
@@ -47,8 +64,16 @@ void DeviceWidget::onDeleteClick(void)
 void DeviceWidget::onDialogSave(const DeviceDialog::DeviceData& tData)
 {
 	Interface->Name->setText(tData.Name);
-	Interface->Enabled->setChecked(tData.Active);
 	Interface->Pin->setText(QString::number(tData.Pin));
+
+	if (!bInitialSwitch)
+	{
+		Interface->Enabled->setChecked(tData.Active);
+
+		bInitialSwitch = true;
+	}
+
+	uPin = tData.Pin;
 
 	emit onDataChange();
 }

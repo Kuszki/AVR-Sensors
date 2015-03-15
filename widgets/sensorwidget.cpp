@@ -128,7 +128,7 @@ double SensorWidget::AVG(Measure& tData)
 {
 	double Buff = 0.0;
 
-	for (int i = 0; i < tData.uSamples; i++) Buff += tData.pfSamples[i];
+	for (unsigned i = 0; i < tData.uSamples; i++) Buff += tData.pfSamples[i];
 
 	tData.uCurrent = 0;
 

@@ -136,9 +136,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Enabled</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>DeviceWidget</receiver>
+   <slot>onActiveSwitch(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>457</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOptionsClick()</slot>
   <slot>onDeleteClick()</slot>
+  <slot>onActiveSwitch(bool)</slot>
  </slots>
 </ui>

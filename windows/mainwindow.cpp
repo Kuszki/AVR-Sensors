@@ -120,7 +120,7 @@ void MainWindow::Connect(void)
 					"Nie udało się nawiązać połączenia z wybranym urządzeniem");
 
 	Interface->Alive->setChecked(Serial.isOpen());
-	Interface->groupOptions->setEnabled(Serial.isOpen());
+	Interface->Save->setEnabled(Serial.isOpen());
 }
 
 void MainWindow::Disconnect(void)
@@ -134,7 +134,9 @@ void MainWindow::Disconnect(void)
 	}
 
 	Interface->Alive->setChecked(Serial.isOpen());
-	Interface->groupOptions->setEnabled(Serial.isOpen());
+	Interface->Save->setEnabled(Serial.isOpen());
+
+	emit onControlChange(false);
 }
 
 void MainWindow::AddWidget(void)
@@ -210,6 +212,10 @@ void MainWindow::AddEvent(unsigned char ID)
 	connect(widget,
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
+
+	/*connect(widget,
+		   SIGNAL(onSwitchEvent(unsigned char,bool)),
+		   SLOT(SwitchDevice(unsigned char,bool)));*/
 }
 
 void MainWindow::AddDevice(unsigned char ID)
@@ -228,11 +234,30 @@ void MainWindow::AddDevice(unsigned char ID)
 		   SIGNAL(onDataChange()),
 		   SLOT(UpdateEvents()));
 
+	connect(widget,
+		   SIGNAL(onManualSwitch(unsigned char,bool)),
+		   SLOT(SwitchDevice(unsigned char,bool)));
 }
 
 void MainWindow::UpdateEvents(void)
 {
 	foreach (EventWidget* widget, Events) widget->onUpdateData();
+}
+
+void MainWindow::UpdateControl(void)
+{
+	if (Serial.isOpen())
+	{
+		unsigned char Frame[SIGNAL_SIZE];
+
+		Frame[0] = SIGNAL_CONTROL;
+		Frame[1] = (Interface->controlAuto->isChecked() << 2) |
+				 (Interface->controlRemote->isChecked() << 1);
+
+		Serial.write((char*) Frame, SIGNAL_SIZE);
+
+		emit onControlChange(Interface->controlManual->isChecked());
+	}
 }
 
 void MainWindow::UpdateMeasurements(void)
@@ -273,11 +298,14 @@ void MainWindow::UpdateLink(void)
 
 			unsigned Time = (Interface->Time->value() * 65535) / 4.19424;
 
-			Frame[0] = Interface->Active->isChecked();
+			Frame[0] = Interface->Active->isChecked() ?
+						 SIGNAL_START : SIGNAL_STOP;
 			Frame[1] = (unsigned char) Time;
 			Frame[2] = (unsigned char) (Time >> 8);
 
 			Serial.write((char*) Frame, SIGNAL_SIZE);
+
+			UpdateControl();
 		}
 	}
 }
@@ -298,6 +326,20 @@ void MainWindow::UpdatehData(void)
 	}
 
 	emit onRefreshValues(Engine);
+}
+
+void MainWindow::SwitchDevice(unsigned char uPin, bool bState)
+{
+	if (Serial.isOpen())
+	{
+		unsigned char Frame[SIGNAL_SIZE];
+
+		Frame[0] = SIGNAL_CONTROL;
+		Frame[1] = uPin;
+		Frame[2] = bState;
+
+		Serial.write((char*) Frame, SIGNAL_SIZE);
+	}
 }
 
 QSqlDatabase& MainWindow::getDatabase(void)
