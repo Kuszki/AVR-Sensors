@@ -26,12 +26,15 @@ class SensorDialog : public QDialog
 			QString Name;
 			QString Equation;
 			QString Label;
+			QString Desc;
 
 			float Minimum;
 			float Maximum;
 
 			bool Active;
 			bool Style;
+			bool Virtual;
+			bool Multiple;
 		};
 
 	private:

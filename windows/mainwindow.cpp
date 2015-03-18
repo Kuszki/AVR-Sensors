@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	Interface->setupUi(this);
 
+	for (unsigned i = 0; i < SENSORS_COUNT; i++)
+		Engine.globalObject().setProperty(QString("x%1").arg(i + 1), 0);
+
 	DialogAddSensor = new SensorDialog(this, 0);
 	DialogAddEvent = new EventDialog(this, 0);
 	DialogAddDevice = new DeviceDialog(this, 0);
@@ -54,13 +57,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 	QSqlQuery Query(Database);
 
-	if (Query.exec("SELECT ID FROM sensors"))
+	if (Query.exec("SELECT ID FROM sensors ORDER BY ID"))
 		while (Query.next()) AddSensor(Query.value(0).toUInt());
 
-	if (Query.exec("SELECT ID FROM events"))
+	if (Query.exec("SELECT ID FROM events ORDER BY ID"))
 		while (Query.next()) AddEvent(Query.value(0).toUInt());
 
-	if (Query.exec("SELECT ID FROM targets"))
+	if (Query.exec("SELECT ID FROM targets ORDER BY ID"))
 		while (Query.next()) AddDevice(Query.value(0).toUInt());
 
 	UpdateDevices();
@@ -177,7 +180,6 @@ void MainWindow::DeleteWidget(unsigned char ID, unsigned char uType)
 			Sensors.remove(ID);
 
 		break;
-		default: qDebug() << "Próba usunięcia nieznanego widgetu";
 	}
 }
 
@@ -231,12 +233,12 @@ void MainWindow::AddDevice(unsigned char ID)
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
 
 	connect(widget,
-		   SIGNAL(onDataChange()),
-		   SLOT(UpdateEvents()));
-
-	connect(widget,
 		   SIGNAL(onManualSwitch(unsigned char,bool)),
 		   SLOT(SwitchDevice(unsigned char,bool)));
+
+	connect(widget,
+		   SIGNAL(onDataChange()),
+		   SLOT(UpdateEvents()));
 }
 
 void MainWindow::UpdateEvents(void)
@@ -318,11 +320,12 @@ void MainWindow::UpdatehData(void)
 
 	Serial.read((char*) aData, FRAME_SIZE);
 
-	for (unsigned i = 0; i < (FRAME_SIZE / 2); i++)
+	for (unsigned i = 0; i < SENSORS_COUNT; i++)
 	{
 		Engine.globalObject().setProperty(
-					QString("x%1").arg(i + 1),
-					((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0));
+				QString("x%1").arg(i + 1),
+				((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0),
+				QScriptValue::ReadOnly);
 	}
 
 	emit onRefreshValues(Engine);

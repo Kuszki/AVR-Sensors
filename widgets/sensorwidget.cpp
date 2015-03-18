@@ -23,16 +23,33 @@ SensorWidget::SensorWidget(QWidget *parent, unsigned char uID)
 		   SLOT(onUpdateSample(bool, unsigned)));
 
 	Dialog->LoadSettings();
+
+	MainWindow::getInstance()->getEngine().globalObject().
+		setProperty(Data.Label, 0, QScriptValue::ReadOnly);
 }
 
 SensorWidget::~SensorWidget()
 {
+	QScriptValueIterator Iterator(MainWindow::getInstance()->
+							getEngine().globalObject());
+
+	while (Iterator.hasNext())
+	{
+		Iterator.next();
+
+		if (Iterator.name() == Data.Label) Iterator.remove();
+	}
+
+	if (Samples.pfSamples) delete [] Samples.pfSamples;
+
 	delete Dialog;
 	delete Interface;
 }
 
 void SensorWidget::onUpdateSample(bool bActive, unsigned uSamples)
 {
+	if (Data.Virtual) return;
+
 	if (Samples.pfSamples) delete [] Samples.pfSamples;
 
 	if (bActive)
@@ -57,12 +74,15 @@ void SensorWidget::onUpdateValue(QScriptEngine& Engine)
 	{
 		double fValue = Engine.evaluate(Data.Equation).toNumber();
 
-		if (Samples.uSamples == Samples.uCurrent)
+		if (Samples.uSamples == Samples.uCurrent || Data.Virtual)
 		{
 			if (Samples.uSamples) fValue = AVG(Samples);
 
 			Interface->Progress->setValue(fValue);
 			Interface->Value->display(fValue);
+
+			MainWindow::getInstance()->getEngine().globalObject().
+				setProperty(Data.Label, fValue, QScriptValue::ReadOnly);
 		}
 		else
 		{
@@ -103,13 +123,13 @@ void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 		Interface->Value->display(0);
 	}
 
-	Interface->Desc->setText(tData.Label);
+	Interface->Desc->setText(tData.Desc);
 
 	Interface->Label->setText(tData.Name);
 	Interface->Label->setEnabled(tData.Active);
 
 	Interface->Progress->setVisible(tData.Style && tData.Active);
-	Interface->Progress->setFormat(tData.Label.isEmpty() ? "%v [%p%]" : "%v [" + tData.Label + "]");
+	Interface->Progress->setFormat(tData.Label.isEmpty() ? "%v [%p%]" : "%v [" + tData.Desc + "]");
 	Interface->Progress->setMaximum(tData.Maximum);
 	Interface->Progress->setMinimum(tData.Minimum);
 
@@ -120,6 +140,15 @@ void SensorWidget::onDialogSave(const SensorDialog::SensorData& tData)
 	Interface->Label->setSizePolicy(tData.Active ? QSizePolicy::Preferred : QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	Data.Equation = tData.Equation;
+	Data.Label = tData.Label;
+
+	Data.Virtual = tData.Virtual;
+
+	if (Data.Virtual)
+	{
+		Samples.uSamples = 0;
+		Samples.uCurrent = 0;
+	}
 
 	emit onDataChange();
 }

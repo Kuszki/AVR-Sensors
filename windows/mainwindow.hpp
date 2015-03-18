@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#define FRAME_SIZE 12
+#define SENSORS_COUNT 6
+
+#define FRAME_SIZE (SENSORS_COUNT * 2)
 #define SIGNAL_SIZE 5
 
 #define TYPE_SENSOR 1
@@ -38,11 +40,6 @@ class MainWindow : public QMainWindow
 
 		Q_OBJECT
 
-	public:
-
-		explicit MainWindow(QWidget* parent = nullptr);
-		~MainWindow();
-
 	private:
 
 		static MainWindow* Instance;
@@ -61,10 +58,15 @@ class MainWindow : public QMainWindow
 		QMap<unsigned char, EventWidget*> Events;
 		QMap<unsigned char, DeviceWidget*> Devices;
 
+		int uSample = 0;
+
 		void Connect(void);
 		void Disconnect(void);
 
 	public:
+
+		explicit MainWindow(QWidget* parent = nullptr);
+		~MainWindow();
 
 		static MainWindow* getInstance(void);
 

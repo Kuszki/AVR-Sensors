@@ -41,12 +41,11 @@ class EventWidget : public QWidget
 		explicit EventWidget(QWidget* parent, unsigned char uID);
 		~EventWidget();
 
-		const EventBinary& getEvent(void);
-
 	private slots:
 
 		void onOptionsClick(void);
 		void onDeleteClick(void);
+
 		void onDialogSave(const EventDialog::EventData& tData);
 
 	public slots:
@@ -56,6 +55,7 @@ class EventWidget : public QWidget
 	signals:
 
 		void onDataChange(void);
+
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 

@@ -22,7 +22,7 @@ bool SensorDialog::LoadSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	query.prepare("SELECT name, expr, type, active, style, min,  max \
+	query.prepare("SELECT name, label, expr, type, active, style, min,  max \
 			    FROM sensors \
 			    WHERE ID=:ID");
 
@@ -31,12 +31,13 @@ bool SensorDialog::LoadSettings(void)
 	if (query.exec() && query.next())
 	{
 		LastData.Name = query.value(0).toString();
-		LastData.Equation = query.value(1).toString();
-		LastData.Label = query.value(2).toString();
-		LastData.Active = query.value(3).toBool();
-		LastData.Style = query.value(4).toBool();
-		LastData.Minimum = query.value(5).toDouble();
-		LastData.Maximum = query.value(6).toDouble();
+		LastData.Label = query.value(1).toString();
+		LastData.Equation = query.value(2).toString();
+		LastData.Desc = query.value(3).toString();
+		LastData.Active = query.value(4).toBool();
+		LastData.Style = query.value(5).toBool();
+		LastData.Minimum = query.value(6).toDouble();
+		LastData.Maximum = query.value(7).toDouble();
 	}
 	else	return false;
 
@@ -52,6 +53,7 @@ bool SensorDialog::SaveSettings(void)
 	if (ID) query.prepare(
 				"UPDATE sensors SET \
 				name=:name, \
+				label=:label, \
 				expr=:expr, \
 				type=:type, \
 				active=:active, \
@@ -61,15 +63,16 @@ bool SensorDialog::SaveSettings(void)
 				WHERE ID=:ID");
 	else	query.prepare(
 				"INSERT INTO sensors \
-				(name, expr, type, active, style, min, max) \
+				(name, label, expr, type, active, style, min, max) \
 				VALUES \
-				(:name, :expr, :type, :active, :style, :min, :max)");
+				(:name, :label, :expr, :type, :active, :style, :min, :max)");
 
 	GetData(LastData);
 
 	query.bindValue(":name", LastData.Name);
+	query.bindValue(":label", LastData.Label);
 	query.bindValue(":expr", LastData.Equation);
-	query.bindValue(":type", LastData.Label);
+	query.bindValue(":type", LastData.Desc);
 	query.bindValue(":active", LastData.Active);
 	query.bindValue(":style", LastData.Style);
 	query.bindValue(":min", LastData.Minimum);
@@ -110,8 +113,9 @@ bool SensorDialog::DeleteSettings(void)
 void SensorDialog::GetData(SensorData& tData)
 {
 	tData.Name = Interface->Name->text();
+	tData.Label = Interface->Variable->text();
 	tData.Equation = Interface->Equation->document()->toPlainText();
-	tData.Label = Interface->Type->text();
+	tData.Desc = Interface->Type->text();
 	tData.Minimum = Interface->Min->value();
 	tData.Maximum = Interface->Max->value();
 	tData.Active = Interface->Enabled->isChecked();
@@ -121,13 +125,38 @@ void SensorDialog::GetData(SensorData& tData)
 void SensorDialog::SetData(SensorData& tData, bool bRefresh)
 {
 	Interface->Name->setText(tData.Name);
+	Interface->Variable->setText(tData.Label);
 	Interface->Equation->document()->setPlainText(tData.Equation);
-	Interface->Type->setText(tData.Label);
+	Interface->Type->setText(tData.Desc);
 	Interface->Min->setValue(tData.Minimum);
 	Interface->Max->setValue(tData.Maximum);
 	Interface->Enabled->setChecked(tData.Active);
 	Interface->StyleBar->setChecked(tData.Style);
 	Interface->StyleLCD->setChecked(!tData.Style);
+
+	if (ID)
+	{
+		QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
+		unsigned uCount = 0;
+
+		for (unsigned i = 0; i < SENSORS_COUNT; i++)
+		{
+			uCount += LastData.Equation.contains(
+						QString("x%1").arg(i + 1));
+		}
+
+		tData.Multiple = (uCount > 1);
+
+		uCount = 0;
+
+		if (query.exec("SELECT label FROM sensors")) while (query.next())
+		{
+			uCount += LastData.Equation.contains(query.value(0).toString());
+		}
+
+		tData.Virtual = (uCount > 0);
+	}
 
 	if (bRefresh) emit onSettingsAccept(tData);
 }
@@ -143,9 +172,9 @@ void SensorDialog::accept(void)
 {
 	const QString& Equation = Interface->Equation->document()->toPlainText();
 
-	QScriptEngine Script;
+	QScriptEngine& Script = MainWindow::getInstance()->getEngine();
 
-	QScriptValue Result = Script.evaluate("x1=x2=x3=x4=x5=x6=1;" + Equation);
+	QScriptValue Result = Script.evaluate(Equation);
 
 	if (Script.hasUncaughtException()) QMessageBox::warning(
 				this,
@@ -172,6 +201,7 @@ void SensorDialog::onParamsChange(void)
 	Interface->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
 				Interface->Min->value() < Interface->Max->value() &&
 				!Interface->Name->text().isEmpty() &&
+				!Interface->Variable->text().isEmpty() &&
 				!Interface->Equation->document()->toPlainText().isEmpty()
 				);
 }

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QScriptEngine>
 #include <QRegularExpression>
+#include <QScriptValueIterator>
 #include <QDebug>
 
 #include "windows/sensordialog.hpp"
@@ -31,8 +32,10 @@ class SensorWidget : public QWidget
 		struct Sensor
 		{
 			QString Equation;
+			QString Label;
 
 			bool Active = false;
+			bool Virtual = false;
 		};
 
 		const unsigned char ID;
@@ -65,6 +68,7 @@ class SensorWidget : public QWidget
 	signals:
 
 		void onDataChange(void);
+
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 
