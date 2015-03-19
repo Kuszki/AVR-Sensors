@@ -58,16 +58,21 @@ class SensorWidget : public QWidget
 
 		void onOptionsClick(void);
 		void onDeleteClick(void);
+
 		void onDialogSave(const SensorDialog::SensorData& tData);
 
 	public slots:
 
 		void onUpdateSample(bool bActive, unsigned uSamples);
+
 		void onUpdateValue(QScriptEngine& Engine);
 
 	signals:
 
 		void onDataChange(void);
+
+		void onSiwtchEvent(unsigned char uID,
+					    bool bState);
 
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);

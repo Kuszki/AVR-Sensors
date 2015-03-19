@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QScriptEngine>
 #include <QMessageBox>
+#include <QRegularExpression>
+
 #include <QtSql>
 
 namespace Ui
@@ -26,16 +28,20 @@ class EventDialog : public QDialog
 			QString Name;
 
 			float Value;
+			float Voltage;
 
 			bool Active;
 			bool Action;
 			bool Where;
+			bool Simple;
 
 			QString Sensor;
 			QString Device;
+			QString Variable;
 
 			unsigned char SensorID;
 			unsigned char DeviceID;
+			unsigned char PinID;
 		};
 
 	private:
@@ -50,6 +56,8 @@ class EventDialog : public QDialog
 		void GetData(EventData& tData);
 		void SetData(EventData& tData,
 				   bool bRefresh);
+
+		void CompleteData(EventData& tData);
 
 	public:
 
@@ -73,6 +81,7 @@ class EventDialog : public QDialog
 	signals:
 
 		void onSettingsAccept(const EventDialog::EventData& tData);
+
 		void onWidgetAdd(unsigned char uID);
 };
 

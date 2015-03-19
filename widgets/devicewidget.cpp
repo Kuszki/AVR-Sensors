@@ -18,6 +18,10 @@ DeviceWidget::DeviceWidget(QWidget* parent, unsigned char uID)
 		   SIGNAL(onControlChange(bool)),
 		   SLOT(onChangeControl(bool)));
 
+	connect(parent,
+		   SIGNAL(onDeviceUpdate(unsigned char, bool)),
+		   SLOT(onChangeState(unsigned char,bool)));
+
 	Dialog->LoadSettings();
 }
 
@@ -37,6 +41,12 @@ void DeviceWidget::onChangeControl(bool bManual)
 
 	if (bManual)
 		emit onManualSwitch(uPin, Interface->Enabled->isChecked());
+}
+
+void DeviceWidget::onChangeState(unsigned char uPinID, bool bState)
+{
+	if (uPinID == uPin)
+		Interface->Enabled->setChecked(bState);
 }
 
 void DeviceWidget::onOptionsClick(void)

@@ -41,6 +41,7 @@ bool SensorDialog::LoadSettings(void)
 	}
 	else	return false;
 
+	CompleteData(LastData);
 	SetData(LastData, true);
 
 	return true;
@@ -120,6 +121,8 @@ void SensorDialog::GetData(SensorData& tData)
 	tData.Maximum = Interface->Max->value();
 	tData.Active = Interface->Enabled->isChecked();
 	tData.Style = Interface->StyleBar->isChecked();
+
+	CompleteData(tData);
 }
 
 void SensorDialog::SetData(SensorData& tData, bool bRefresh)
@@ -134,31 +137,23 @@ void SensorDialog::SetData(SensorData& tData, bool bRefresh)
 	Interface->StyleBar->setChecked(tData.Style);
 	Interface->StyleLCD->setChecked(!tData.Style);
 
-	if (ID)
+	if (bRefresh) emit onSettingsAccept(tData);
+}
+
+void SensorDialog::CompleteData(SensorData& tData)
+{
+	if (!ID) return;
+
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
+	unsigned uCount = 0;
+
+	if (query.exec("SELECT label FROM sensors")) while (query.next())
 	{
-		QSqlQuery query(MainWindow::getInstance()->getDatabase());
-
-		unsigned uCount = 0;
-
-		for (unsigned i = 0; i < SENSORS_COUNT; i++)
-		{
-			uCount += LastData.Equation.contains(
-						QString("x%1").arg(i + 1));
-		}
-
-		tData.Multiple = (uCount > 1);
-
-		uCount = 0;
-
-		if (query.exec("SELECT label FROM sensors")) while (query.next())
-		{
-			uCount += LastData.Equation.contains(query.value(0).toString());
-		}
-
-		tData.Virtual = (uCount > 0);
+		uCount += tData.Equation.contains(query.value(0).toString());
 	}
 
-	if (bRefresh) emit onSettingsAccept(tData);
+	tData.Virtual = (uCount > 0);
 }
 
 void SensorDialog::open(void)

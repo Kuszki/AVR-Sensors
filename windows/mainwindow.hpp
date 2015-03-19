@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#define V_MIN 0.0
+#define V_MAX 5.0
+#define V_RES 1024
+#define V_QUA (V_MAX / V_RES)
+
 #define SENSORS_COUNT 6
 
 #define FRAME_SIZE (SENSORS_COUNT * 2)
@@ -97,8 +102,14 @@ class MainWindow : public QMainWindow
 	signals:
 
 		void onControlChange(bool bLock);
+
 		void onRefreshValues(QScriptEngine& Engine);
+		void onRefreshEvents(QScriptEngine& Engine);
+
 		void onSampleUpdate(bool bActive, unsigned uSamples);
+
+		void onDeviceUpdate(unsigned char uPin,
+						bool bState);
 
 };
 

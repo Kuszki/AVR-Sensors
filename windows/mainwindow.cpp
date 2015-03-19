@@ -118,9 +118,10 @@ void MainWindow::Connect(void)
 {
 	if (!Serial.open(QIODevice::ReadWrite))
 		QMessageBox::warning(
-					this,
-					"Błąd",
-					"Nie udało się nawiązać połączenia z wybranym urządzeniem");
+			this,
+			"Błąd",
+			"Nie udało się nawiązać połączenia z wybranym urządzeniem"
+			);
 
 	Interface->Alive->setChecked(Serial.isOpen());
 	Interface->Save->setEnabled(Serial.isOpen());
@@ -191,8 +192,10 @@ void MainWindow::AddSensor(unsigned char ID)
 
 	Interface->layoutSensors->addWidget(widget);
 
-	widget->onUpdateSample(Interface->Average->isChecked(),
-					   Interface->Samples->value());
+	widget->onUpdateSample(
+				Interface->Average->isChecked(),
+				Interface->Samples->value()
+				);
 
 	connect(widget,
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
@@ -215,9 +218,9 @@ void MainWindow::AddEvent(unsigned char ID)
 		   SIGNAL(onWidgetDelete(unsigned char, unsigned char)),
 		   SLOT(DeleteWidget(unsigned char,unsigned char)));
 
-	/*connect(widget,
+	connect(widget,
 		   SIGNAL(onSwitchEvent(unsigned char,bool)),
-		   SLOT(SwitchDevice(unsigned char,bool)));*/
+		   SLOT(SwitchDevice(unsigned char,bool)));
 }
 
 void MainWindow::AddDevice(unsigned char ID)
@@ -264,8 +267,10 @@ void MainWindow::UpdateControl(void)
 
 void MainWindow::UpdateMeasurements(void)
 {
-	emit onSampleUpdate(Interface->Average->isChecked(),
-					Interface->Samples->value());
+	emit onSampleUpdate(
+				Interface->Average->isChecked(),
+				Interface->Samples->value()
+				);
 }
 
 void MainWindow::UpdateDevices(void)
@@ -324,11 +329,14 @@ void MainWindow::UpdatehData(void)
 	{
 		Engine.globalObject().setProperty(
 				QString("x%1").arg(i + 1),
-				((aData[2*i + 1] << 8) + aData[2*i]) * (5 / 1024.0),
+				((aData[2*i + 1] << 8) + aData[2*i]) * V_QUA,
 				QScriptValue::ReadOnly);
 	}
 
 	emit onRefreshValues(Engine);
+
+	if (Interface->controlRemote->isChecked())
+		emit onRefreshEvents(Engine);
 }
 
 void MainWindow::SwitchDevice(unsigned char uPin, bool bState)
@@ -343,6 +351,8 @@ void MainWindow::SwitchDevice(unsigned char uPin, bool bState)
 
 		Serial.write((char*) Frame, SIGNAL_SIZE);
 	}
+
+	if (Interface->controlRemote->isChecked()) emit onDeviceUpdate(uPin, bState);
 }
 
 QSqlDatabase& MainWindow::getDatabase(void)

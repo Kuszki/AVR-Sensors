@@ -47,11 +47,16 @@ class DeviceWidget : public QWidget
 
 		void onChangeControl(bool bLock);
 
+		void onChangeState(unsigned char uPinID,
+					    bool bState);
+
 	signals:
 
 		void onDataChange(void);
+
 		void onManualSwitch(unsigned char uDev,
 						bool bState);
+
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
 

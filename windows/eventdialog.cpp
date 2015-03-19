@@ -41,26 +41,7 @@ bool EventDialog::LoadSettings(void)
 	}
 	else	return false;
 
-	query.prepare("SELECT name FROM sensors WHERE ID=:ID");
-
-	query.bindValue(":ID", LastData.SensorID);
-
-	if (query.exec() && query.next())
-	{
-		LastData.Sensor = query.value(0).toString();
-	}
-	else return false;
-
-	query.prepare("SELECT name FROM targets WHERE ID=:ID");
-
-	query.bindValue(":ID", LastData.DeviceID);
-
-	if (query.exec() && query.next())
-	{
-		LastData.Device = query.value(0).toString();
-	}
-	else	return false;
-
+	CompleteData(LastData);
 	SetData(LastData, true);
 
 	return true;
@@ -126,14 +107,16 @@ void EventDialog::GetData(EventData& tData)
 	tData.Where = Interface->Where->currentIndex();
 	tData.Action = Interface->Action->currentIndex();
 	tData.Active = Interface->Active->isChecked();
-	tData.Sensor = Interface->Sensor->currentText();
-	tData.Device = Interface->Device->currentText();
 	tData.SensorID = Interface->Sensor->currentData().toUInt();
 	tData.DeviceID = Interface->Device->currentData().toUInt();
+
+	CompleteData(tData);
 }
 
 void EventDialog::SetData(EventData& tData, bool bRefresh)
 {
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
 	Interface->Name->setText(tData.Name);
 	Interface->Value->setValue(tData.Value);
 	Interface->Where->setCurrentIndex(tData.Where);
@@ -146,6 +129,86 @@ void EventDialog::SetData(EventData& tData, bool bRefresh)
 				Interface->Device->findData(tData.DeviceID));
 
 	if (bRefresh) emit onSettingsAccept(tData);
+}
+
+void EventDialog::CompleteData(EventData& tData)
+{
+	if (!ID) return;
+
+	QSqlQuery query(MainWindow::getInstance()->getDatabase());
+
+	query.prepare("SELECT name, label, expr FROM sensors WHERE ID=:ID");
+
+	query.bindValue(":ID", tData.SensorID);
+
+	if (query.exec() && query.next())
+	{
+		tData.Sensor = query.value(0).toString();
+		tData.Variable = query.value(1).toString();
+
+		QString Equation = query.value(2).toString();
+
+		unsigned uCountS = 0;
+
+		for (unsigned i = 0; i < SENSORS_COUNT; i++)
+		{
+			QString var = QString("x%1").arg(i + 1);
+
+			uCountS += Equation.contains(var);
+
+			Equation.replace(QRegularExpression(var), "_X_");
+		}
+
+		unsigned uCountV = 0;
+
+		if (query.exec("SELECT label FROM sensors"))
+		while (query.next())
+		{
+			uCountV += Equation.contains(query.value(0).toString());
+		}
+
+		tData.Simple = ((uCountS == 1) && (uCountV == 0));
+
+		if (tData.Simple)
+		{
+			QScriptEngine Engine;
+
+			float Value, Diff, Found;
+
+			float Start = V_MIN;
+			float Stop = V_MAX;
+
+			do
+			{
+				Value = (Start + Stop) / 2.0;
+
+				Engine.globalObject().setProperty("_X_", Value);
+
+				Found = Engine.evaluate(Equation).toNumber();
+
+				if (Found < tData.Value) Start = Value;
+				else Stop = Value;
+
+				Diff = Found - tData.Value;
+			}
+			while(Diff > V_QUA || -Diff > V_QUA);
+
+			tData.Voltage = Value;
+
+		}
+	}
+	else return;
+
+	query.prepare("SELECT name, pin FROM targets WHERE ID=:ID");
+
+	query.bindValue(":ID", LastData.DeviceID);
+
+	if (query.exec() && query.next())
+	{
+		tData.Device = query.value(0).toString();
+		tData.PinID = query.value(1).toUInt();
+	}
+	else	return;
 }
 
 void EventDialog::open(void)

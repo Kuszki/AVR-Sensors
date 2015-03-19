@@ -34,7 +34,6 @@ class SensorDialog : public QDialog
 			bool Active;
 			bool Style;
 			bool Virtual;
-			bool Multiple;
 		};
 
 	private:
@@ -49,6 +48,8 @@ class SensorDialog : public QDialog
 		void GetData(SensorData& tData);
 		void SetData(SensorData& tData,
 				   bool bRefresh);
+
+		void CompleteData(SensorData& tData);
 
 	public:
 

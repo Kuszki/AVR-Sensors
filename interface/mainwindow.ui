@@ -441,7 +441,7 @@
         <item row="2" column="1">
          <widget class="QLabel" name="labelLicenseType">
           <property name="text">
-           <string>GNU GLP v2</string>
+           <string>GNU GPL v2</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

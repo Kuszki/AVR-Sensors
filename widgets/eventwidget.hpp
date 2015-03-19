@@ -22,10 +22,19 @@ class EventWidget : public QWidget
 
 		struct EventBinary
 		{
-			unsigned char Pin;
-			unsigned char When;
+			QString Variable;
 
-			unsigned short Value;
+			unsigned char Pin;
+			unsigned char Value;
+
+			float SwitchValue;
+			float LastValue;
+
+			bool Active;
+			bool Action;
+			bool When;
+			bool Simple;
+			bool Switch;
 		};
 
 	private:
@@ -35,6 +44,8 @@ class EventWidget : public QWidget
 		Ui::EventWidget* Interface;
 
 		EventDialog* Dialog;
+
+		EventBinary Data;
 
 	public:
 
@@ -50,11 +61,16 @@ class EventWidget : public QWidget
 
 	public slots:
 
+		void onUpdateValue(QScriptEngine& Engine);
+
+		void onUpdateControl(bool bControl);
+
 		void onUpdateData(void);
 
 	signals:
 
-		void onDataChange(void);
+		void onSwitchEvent(unsigned char uID,
+					    bool bState);
 
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);

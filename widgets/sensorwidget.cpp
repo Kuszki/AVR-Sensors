@@ -70,24 +70,23 @@ void SensorWidget::onUpdateSample(bool bActive, unsigned uSamples)
 
 void SensorWidget::onUpdateValue(QScriptEngine& Engine)
 {
-	if (Data.Active)
+	if (!Data.Active) return;
+
+	double fValue = Engine.evaluate(Data.Equation).toNumber();
+
+	if (Samples.uSamples == Samples.uCurrent || Data.Virtual)
 	{
-		double fValue = Engine.evaluate(Data.Equation).toNumber();
+		if (Samples.uSamples) fValue = AVG(Samples);
 
-		if (Samples.uSamples == Samples.uCurrent || Data.Virtual)
-		{
-			if (Samples.uSamples) fValue = AVG(Samples);
+		Interface->Progress->setValue(fValue);
+		Interface->Value->display(fValue);
 
-			Interface->Progress->setValue(fValue);
-			Interface->Value->display(fValue);
-
-			MainWindow::getInstance()->getEngine().globalObject().
-				setProperty(Data.Label, fValue, QScriptValue::ReadOnly);
-		}
-		else
-		{
-			Samples.pfSamples[Samples.uCurrent++] = fValue;
-		}
+		MainWindow::getInstance()->getEngine().globalObject().
+			setProperty(Data.Label, fValue, QScriptValue::ReadOnly);
+	}
+	else
+	{
+		Samples.pfSamples[Samples.uCurrent++] = fValue;
 	}
 }
 
