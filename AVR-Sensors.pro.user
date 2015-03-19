@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 3.2.1, 2015-03-12T20:38:24. -->
-=======
-<!-- Written by QtCreator 3.2.1, 2015-03-19T19:18:12. -->
->>>>>>> sqlite
+<!-- Written by QtCreator 3.2.1, 2015-03-19T19:39:55. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -43,16 +39,16 @@
    <value type="int" key="EditorConfiguration.PaddingMode">1</value>
    <value type="bool" key="EditorConfiguration.ScrollWheelZooming">true</value>
    <value type="bool" key="EditorConfiguration.ShowMargin">false</value>
-   <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">0</value>
+   <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">1</value>
    <value type="bool" key="EditorConfiguration.SpacesForTabs">true</value>
-   <value type="int" key="EditorConfiguration.TabKeyBehavior">0</value>
+   <value type="int" key="EditorConfiguration.TabKeyBehavior">1</value>
    <value type="int" key="EditorConfiguration.TabSize">8</value>
    <value type="bool" key="EditorConfiguration.UseGlobal">true</value>
-   <value type="int" key="EditorConfiguration.Utf8BomBehavior">1</value>
+   <value type="int" key="EditorConfiguration.Utf8BomBehavior">2</value>
    <value type="bool" key="EditorConfiguration.addFinalNewLine">true</value>
    <value type="bool" key="EditorConfiguration.cleanIndentation">true</value>
    <value type="bool" key="EditorConfiguration.cleanWhitespace">true</value>
-   <value type="bool" key="EditorConfiguration.inEntireDocument">false</value>
+   <value type="bool" key="EditorConfiguration.inEntireDocument">true</value>
   </valuemap>
  </data>
  <data>

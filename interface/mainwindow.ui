@@ -28,24 +28,17 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="mainTab">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabSensors">
        <attribute name="title">
         <string>Sensory</string>
        </attribute>
-<<<<<<< HEAD
-       <layout class="QVBoxLayout" name="layoutMainTab">
-=======
        <layout class="QVBoxLayout" name="layoutTabSensors">
->>>>>>> sqlite
         <item>
          <layout class="QVBoxLayout" name="layoutSensors"/>
         </item>
         <item>
-<<<<<<< HEAD
-         <spacer name="verticalSpacer">
-=======
          <spacer name="spacerSensors">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -93,7 +86,6 @@
         </item>
         <item>
          <spacer name="spacerDevices">
->>>>>>> sqlite
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -111,15 +103,9 @@
        <attribute name="title">
         <string>Opcje</string>
        </attribute>
-<<<<<<< HEAD
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QGroupBox" name="groupCount">
-=======
        <layout class="QVBoxLayout" name="layoutOptions">
         <item>
          <widget class="QGroupBox" name="groupDevice">
->>>>>>> sqlite
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -127,49 +113,6 @@
            </sizepolicy>
           </property>
           <property name="title">
-<<<<<<< HEAD
-           <string>Czujniki</string>
-          </property>
-          <layout class="QFormLayout" name="formGroupCount">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelCount">
-             <property name="text">
-              <string>Ilość czujników</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="Count">
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>9</number>
-             </property>
-             <property name="value">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupDevice">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Ustawienia urządzenia</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <property name="fieldGrowthPolicy">
-            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-           </property>
-=======
            <string>Urządzenie</string>
           </property>
           <layout class="QGridLayout" name="layoutGroupDevice">
@@ -199,7 +142,6 @@
              </property>
             </widget>
            </item>
->>>>>>> sqlite
            <item row="0" column="0">
             <widget class="QLabel" name="labelDev">
              <property name="text">
@@ -207,36 +149,6 @@
              </property>
             </widget>
            </item>
-<<<<<<< HEAD
-           <item row="0" column="1">
-            <layout class="QHBoxLayout" name="layoutDev">
-             <item>
-              <widget class="QComboBox" name="Device">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="Refresh">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Odświerz</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0">
-=======
            <item row="0" column="1" colspan="2">
             <widget class="QComboBox" name="Device">
              <property name="sizePolicy">
@@ -261,115 +173,21 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="2">
->>>>>>> sqlite
             <widget class="QCheckBox" name="Alive">
              <property name="enabled">
               <bool>false</bool>
              </property>
-             <property name="text">
-              <string>Aktywne</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <layout class="QHBoxLayout" name="layoutConnection">
-             <item>
-              <widget class="QPushButton" name="Disconnect">
-               <property name="text">
-                <string>Rozłącz</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="Connect">
-               <property name="text">
-                <string>Połącz</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupOptions">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Ustawienia połączenia</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout_2">
-           <property name="fieldGrowthPolicy">
-            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelTime">
-             <property name="text">
-              <string>Próbkowanie</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QDoubleSpinBox" name="Time">
-             <property name="suffix">
-              <string> s</string>
-             </property>
-             <property name="minimum">
-              <double>0.050000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>4.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.050000000000000</double>
-             </property>
-             <property name="value">
-              <double>3.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QCheckBox" name="Active">
-             <property name="text">
-              <string>Aktywne</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="Save">
              <property name="sizePolicy">
-<<<<<<< HEAD
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-=======
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
->>>>>>> sqlite
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="text">
-<<<<<<< HEAD
-              <string>Zastosuj</string>
-=======
               <string>Aktywne</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
->>>>>>> sqlite
              </property>
             </widget>
            </item>
@@ -377,31 +195,7 @@
          </widget>
         </item>
         <item>
-<<<<<<< HEAD
-         <spacer name="spacerOptions">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabInfo">
-       <attribute name="title">
-        <string>Informacje</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QWidget" name="widget" native="true">
-=======
          <widget class="QGroupBox" name="groupOptions">
->>>>>>> sqlite
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
