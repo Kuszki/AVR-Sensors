@@ -4,27 +4,38 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport widgets script
+TARGET	=	AVR-Sensors
+TEMPLATE	=	app
 
-SOURCES  += main.cpp\
-		  interface/mainwindow.cpp \
-		  interface/settingsdialog.cpp \
-    interface/sensorwidget.cpp
+QT		+=	core gui serialport widgets script sql
 
-HEADERS  += interface/mainwindow.hpp \
-		  interface/settingsdialog.hpp \
-    interface/sensorwidget.hpp
+SOURCES	+=	main.cpp\
+			widgets/sensorwidget.cpp \
+			widgets/eventwidget.cpp \
+			widgets/devicewidget.cpp \
+			windows/sensordialog.cpp \
+			windows/eventdialog.cpp \
+			windows/devicedialog.cpp \
+			windows/mainwindow.cpp
 
-FORMS    += interface/mainwindow.ui \
-		  interface/settingsdialog.ui \
-    interface/sensorwidget.ui
+HEADERS	+=	widgets/sensorwidget.hpp \
+			widgets/eventwidget.hpp \
+			widgets/devicewidget.hpp \
+			windows/sensordialog.hpp \
+			windows/eventdialog.hpp \
+			windows/devicedialog.hpp \
+			windows/mainwindow.hpp
 
-CONFIG   += c++11
+FORMS	+=	interface/mainwindow.ui \
+			interface/sensordialog.ui \
+			interface/sensorwidget.ui \
+			interface/eventwidget.ui \
+			interface/devicewidget.ui \
+			interface/eventdialog.ui \
+			interface/devicedialog.ui
 
-TARGET   = AVR-Sensors
-TEMPLATE = app
+CONFIG	+=	c++11
 
-QMAKE_CXXFLAGS += -O3
+RESOURCES	+=	common.qrc
 
-RESOURCES += \
-    common.qrc
+QMAKE_CXXFLAGS	+=	-O3

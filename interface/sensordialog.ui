@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingsDialog</class>
- <widget class="QDialog" name="SettingsDialog">
+ <class>SensorDialog</class>
+ <widget class="QDialog" name="SensorDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>270</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>560</width>
-    <height>270</height>
+    <height>340</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -23,12 +23,38 @@
    <iconset resource="../common.qrc">
     <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
   </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="3">
+    <widget class="QGroupBox" name="groupEquation">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Równanie</string>
+     </property>
+     <layout class="QGridLayout" name="layoutScript">
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="Equation">
+        <property name="tabStopWidth">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="1" rowspan="2">
-    <widget class="QGroupBox" name="Enabled">
+    <widget class="QGroupBox" name="groupOptions">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -36,18 +62,15 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Aktywny</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
+      <string>Ustawienia</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
-     <layout class="QFormLayout" name="formLayout_2">
+     <layout class="QFormLayout" name="layoutOptions">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="labelName">
         <property name="text">
@@ -58,24 +81,24 @@
       <item row="0" column="1">
        <widget class="QLineEdit" name="Name"/>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="labelType">
         <property name="text">
          <string>Jednostka</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="Type"/>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="labelMin">
         <property name="text">
          <string>Minimum</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="Min">
         <property name="minimum">
          <double>-1000.000000000000000</double>
@@ -84,18 +107,18 @@
          <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <double>-20.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="labelMax">
         <property name="text">
          <string>Maksimum</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="Max">
         <property name="minimum">
          <double>-1000.000000000000000</double>
@@ -104,18 +127,18 @@
          <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <double>20.000000000000000</double>
+         <double>5.000000000000000</double>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="labelStyle">
         <property name="text">
          <string>Styl</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QRadioButton" name="StyleLCD">
@@ -136,43 +159,46 @@
         </item>
        </layout>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QGroupBox" name="groupEquation">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Równanie</string>
-     </property>
-     <layout class="QGridLayout" name="groupScript">
-      <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="Equation">
-        <property name="tabStopWidth">
-         <number>10</number>
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="Enabled">
+        <property name="text">
+         <string>Aktywny</string>
         </property>
        </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelEnabled">
+        <property name="text">
+         <string>Stan</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelVar">
+        <property name="text">
+         <string>Zmienna</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="Variable"/>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>Equation</tabstop>
+  <tabstop>Name</tabstop>
+  <tabstop>Variable</tabstop>
+  <tabstop>Type</tabstop>
+  <tabstop>Min</tabstop>
+  <tabstop>Max</tabstop>
+  <tabstop>StyleLCD</tabstop>
+  <tabstop>StyleBar</tabstop>
+  <tabstop>Enabled</tabstop>
+ </tabstops>
  <resources>
   <include location="../common.qrc"/>
  </resources>
@@ -180,12 +206,12 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>291</y>
+     <x>550</x>
+     <y>330</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -196,12 +222,12 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>291</y>
+     <x>550</x>
+     <y>330</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -212,12 +238,12 @@
   <connection>
    <sender>Max</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>226</x>
-     <y>173</y>
+     <x>541</x>
+     <y>212</y>
     </hint>
     <hint type="destinationlabel">
      <x>536</x>
@@ -228,12 +254,12 @@
   <connection>
    <sender>Min</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>125</y>
+     <x>541</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -244,16 +270,32 @@
   <connection>
    <sender>Name</sender>
    <signal>editingFinished()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SensorDialog</receiver>
    <slot>onParamsChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>106</x>
-     <y>21</y>
+     <x>497</x>
+     <y>55</y>
     </hint>
     <hint type="destinationlabel">
      <x>493</x>
      <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Equation</sender>
+   <signal>textChanged()</signal>
+   <receiver>SensorDialog</receiver>
+   <slot>onParamsChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>346</y>
     </hint>
    </hints>
   </connection>

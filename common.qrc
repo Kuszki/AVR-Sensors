@@ -2,6 +2,11 @@
     <qresource prefix="/icons">
         <file alias="icon_main">resources/icon.png</file>
         <file alias="icon_options">resources/icon-options.png</file>
-        <file alias="logo-gnu">resources/gnu-logo.png</file>
+        <file alias="logo_gnu">resources/gnu-logo.png</file>
+        <file alias="icon_event">resources/icon-event.png</file>
+        <file alias="icon_device">resources/icon-device.png</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file alias="database">AVR-Sensors.sqlite</file>
     </qresource>
 </RCC>

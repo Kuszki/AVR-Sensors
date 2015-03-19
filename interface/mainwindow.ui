@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>550</height>
+    <width>450</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>550</height>
+    <width>450</width>
+    <height>625</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -34,19 +34,73 @@
        <attribute name="title">
         <string>Sensory</string>
        </attribute>
+<<<<<<< HEAD
        <layout class="QVBoxLayout" name="layoutMainTab">
+=======
+       <layout class="QVBoxLayout" name="layoutTabSensors">
+>>>>>>> sqlite
         <item>
          <layout class="QVBoxLayout" name="layoutSensors"/>
         </item>
         <item>
+<<<<<<< HEAD
          <spacer name="verticalSpacer">
+=======
+         <spacer name="spacerSensors">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabEvents">
+       <attribute name="title">
+        <string>Zdarzenia</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QVBoxLayout" name="layoutEvents"/>
+        </item>
+        <item>
+         <spacer name="spacerEvents">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabDevices">
+       <attribute name="title">
+        <string>Urządzenia</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QVBoxLayout" name="layoutDevices"/>
+        </item>
+        <item>
+         <spacer name="spacerDevices">
+>>>>>>> sqlite
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -57,9 +111,15 @@
        <attribute name="title">
         <string>Opcje</string>
        </attribute>
+<<<<<<< HEAD
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="groupCount">
+=======
+       <layout class="QVBoxLayout" name="layoutOptions">
+        <item>
+         <widget class="QGroupBox" name="groupDevice">
+>>>>>>> sqlite
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -67,6 +127,7 @@
            </sizepolicy>
           </property>
           <property name="title">
+<<<<<<< HEAD
            <string>Czujniki</string>
           </property>
           <layout class="QFormLayout" name="formGroupCount">
@@ -108,6 +169,37 @@
            <property name="fieldGrowthPolicy">
             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
            </property>
+=======
+           <string>Urządzenie</string>
+          </property>
+          <layout class="QGridLayout" name="layoutGroupDevice">
+           <item row="1" column="2">
+            <widget class="QPushButton" name="Disconnect">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Rozłącz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="Connect">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Połącz</string>
+             </property>
+            </widget>
+           </item>
+>>>>>>> sqlite
            <item row="0" column="0">
             <widget class="QLabel" name="labelDev">
              <property name="text">
@@ -115,6 +207,7 @@
              </property>
             </widget>
            </item>
+<<<<<<< HEAD
            <item row="0" column="1">
             <layout class="QHBoxLayout" name="layoutDev">
              <item>
@@ -143,6 +236,32 @@
             </layout>
            </item>
            <item row="1" column="0">
+=======
+           <item row="0" column="1" colspan="2">
+            <widget class="QComboBox" name="Device">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="Refresh">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Odświerz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+>>>>>>> sqlite
             <widget class="QCheckBox" name="Alive">
              <property name="enabled">
               <bool>false</bool>
@@ -233,13 +352,24 @@
            <item row="1" column="1">
             <widget class="QPushButton" name="Save">
              <property name="sizePolicy">
+<<<<<<< HEAD
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+=======
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+>>>>>>> sqlite
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="text">
+<<<<<<< HEAD
               <string>Zastosuj</string>
+=======
+              <string>Aktywne</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+>>>>>>> sqlite
              </property>
             </widget>
            </item>
@@ -247,6 +377,7 @@
          </widget>
         </item>
         <item>
+<<<<<<< HEAD
          <spacer name="spacerOptions">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -268,261 +399,451 @@
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <widget class="QWidget" name="widget" native="true">
+=======
+         <widget class="QGroupBox" name="groupOptions">
+>>>>>>> sqlite
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QFormLayout" name="formLayout_4">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelProgram">
+          <property name="title">
+           <string>Połączenie</string>
+          </property>
+          <layout class="QHBoxLayout" name="layoutGroupOptions">
+           <item>
+            <widget class="QCheckBox" name="Active">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
-              <string>Nazwa programu:</string>
+              <string>Aktywne</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="labelName">
-             <property name="text">
-              <string>AVR-Sensors</string>
+           <item>
+            <widget class="QDoubleSpinBox" name="Time">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <property name="prefix">
+              <string>próbkuj co </string>
              </property>
-             <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             <property name="suffix">
+              <string> s</string>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelAuthor">
-             <property name="text">
-              <string>Autor:</string>
+             <property name="minimum">
+              <double>0.050000000000000</double>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="labelAuthorName">
-             <property name="text">
-              <string>Łukasz &quot;Kuszki&quot; Dróżdż</string>
+             <property name="maximum">
+              <double>4.000000000000000</double>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <property name="singleStep">
+              <double>0.050000000000000</double>
              </property>
-             <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             <property name="value">
+              <double>3.000000000000000</double>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelLicense">
+           <item>
+            <widget class="QPushButton" name="Save">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
-              <string>Licencja:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="labelLicenseType">
-             <property name="text">
-              <string>GNU GLP v2</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="labelSlite">
-             <property name="text">
-              <string>Strona projektu:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="labelContact">
-             <property name="text">
-              <string>Kontakt:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLabel" name="labelMail">
-             <property name="text">
-              <string>&lt;a href=&quot;mailto:l.drozdz@o2.pl&quot;&gt;l.drozdz@o2.pl&lt;/a&gt;</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="openExternalLinks">
-              <bool>true</bool>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="labelGithub">
-             <property name="text">
-              <string>&lt;a href=&quot;https://github.com/Kuszki/AVR-Sensors&quot;&gt;GitHub&lt;/a&gt;</string>
-             </property>
-             <property name="textFormat">
-              <enum>Qt::AutoText</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="openExternalLinks">
-              <bool>true</bool>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              <string>Zastosuj</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QWidget" name="layoutLicense" native="true">
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="labelLicenseText">
+        <item>
+         <widget class="QGroupBox" name="groupMeasurements">
+          <property name="title">
+           <string>Pomiary</string>
+          </property>
+          <layout class="QHBoxLayout" name="layoutMeasurements">
+           <item>
+            <widget class="QCheckBox" name="Average">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji lub którejś z późniejszych wersji.</string>
+              <string>Licz średnią z próbek</string>
              </property>
-             <property name="scaledContents">
-              <bool>true</bool>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="Samples">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignJustify|Qt::AlignTop</set>
+             <property name="suffix">
+              <string> próbek</string>
              </property>
-             <property name="wordWrap">
+             <property name="minimum">
+              <number>10</number>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupControl">
+          <property name="title">
+           <string>Sterowanie</string>
+          </property>
+          <layout class="QHBoxLayout" name="layoutGroupControl">
+           <item>
+            <widget class="QRadioButton" name="controlManual">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Manualne</string>
+             </property>
+             <property name="checked">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <layout class="QVBoxLayout" name="layouLogo">
-             <item>
-              <widget class="QLabel" name="labelGNU">
-               <property name="minimumSize">
-                <size>
-                 <width>150</width>
-                 <height>150</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>120</width>
-                 <height>120</height>
-                </size>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="../common.qrc">:/icons/logo-gnu</pixmap>
-               </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="spacerLogoDOWN">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+           <item>
+            <widget class="QRadioButton" name="controlRemote">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Zdalne</string>
+             </property>
+            </widget>
            </item>
-           <item row="1" column="1">
-            <layout class="QVBoxLayout" name="layoutLinks">
-             <item>
-              <spacer name="spacerLinksUP">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="labelLicenseEN">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;a href=&quot;http://gnu.org.pl/text/licencja-gnu.html&quot;&gt;Treść licencji(polski)</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
-               </property>
-               <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="labelLicensePL">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;Treść licencji (angielski)&lt;/a&gt;</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
-               </property>
-               <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="spacerLinksDOWN">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+           <item>
+            <widget class="QRadioButton" name="controlAuto">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Własne</string>
+             </property>
+            </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupActions">
+          <property name="title">
+           <string>Akcje</string>
+          </property>
+          <layout class="QGridLayout" name="layoutGroupActions">
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelEvents">
+             <property name="text">
+              <string>Zdarzenia:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QToolButton" name="AddEvent">
+             <property name="icon">
+              <iconset theme="list-add">
+               <normaloff/>
+              </iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QToolButton" name="AddSensor">
+             <property name="icon">
+              <iconset theme="list-add">
+               <normaloff/>
+              </iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QToolButton" name="AddDevice">
+             <property name="icon">
+              <iconset theme="list-add">
+               <normaloff/>
+              </iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelDevices">
+             <property name="text">
+              <string>Urządzenia:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelSensors">
+             <property name="text">
+              <string>Sensory:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabInfo">
+       <attribute name="title">
+        <string>Informacje</string>
+       </attribute>
+       <layout class="QGridLayout" name="layoutInfo">
+        <item row="2" column="1">
+         <widget class="QLabel" name="labelLicenseType">
+          <property name="text">
+           <string>GNU GPL v2</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="labelName">
+          <property name="text">
+           <string>AVR-Sensors</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QLabel" name="labelLicensePL">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>&lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;Treść licencji (angielski)&lt;/a&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelLicense">
+          <property name="text">
+           <string>Licencja:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0" rowspan="3">
+         <widget class="QLabel" name="labelGNU">
+          <property name="maximumSize">
+           <size>
+            <width>160</width>
+            <height>160</height>
+           </size>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../common.qrc">:/icons/logo_gnu</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="QLabel" name="labelLicenseEN">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>&lt;a href=&quot;http://gnu.org.pl/text/licencja-gnu.html&quot;&gt;Treść licencji(polski)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelContact">
+          <property name="text">
+           <string>Kontakt:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="labelMail">
+          <property name="text">
+           <string>&lt;a href=&quot;mailto:l.drozdz@o2.pl&quot;&gt;l.drozdz@o2.pl&lt;/a&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="labelGithub">
+          <property name="text">
+           <string>&lt;a href=&quot;https://github.com/Kuszki/AVR-Sensors&quot;&gt;GitHub&lt;/a&gt;</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0" colspan="2">
+         <spacer name="spacerInfo">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="labelLicenseText">
+          <property name="text">
+           <string>Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji lub którejś z późniejszych wersji.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignJustify|Qt::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelSlite">
+          <property name="text">
+           <string>Strona projektu:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelProgram">
+          <property name="text">
+           <string>Nazwa programu:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelAuthor">
+          <property name="text">
+           <string>Autor:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="labelAuthorName">
+          <property name="text">
+           <string>Łukasz &quot;Kuszki&quot; Dróżdż</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania bliższych informacji - Powszechna Licencja Publiczna GNU.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -533,6 +854,25 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>mainTab</tabstop>
+  <tabstop>Device</tabstop>
+  <tabstop>Refresh</tabstop>
+  <tabstop>Connect</tabstop>
+  <tabstop>Disconnect</tabstop>
+  <tabstop>Alive</tabstop>
+  <tabstop>Active</tabstop>
+  <tabstop>Time</tabstop>
+  <tabstop>Save</tabstop>
+  <tabstop>Average</tabstop>
+  <tabstop>Samples</tabstop>
+  <tabstop>controlManual</tabstop>
+  <tabstop>controlRemote</tabstop>
+  <tabstop>controlAuto</tabstop>
+  <tabstop>AddSensor</tabstop>
+  <tabstop>AddEvent</tabstop>
+  <tabstop>AddDevice</tabstop>
+ </tabstops>
  <resources>
   <include location="../common.qrc"/>
  </resources>
@@ -544,8 +884,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>337</y>
+     <x>420</x>
+     <y>216</y>
     </hint>
     <hint type="destinationlabel">
      <x>512</x>
@@ -560,8 +900,8 @@
    <slot>UpdateDevices()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>191</y>
+     <x>370</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
      <x>473</x>
@@ -576,8 +916,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>228</y>
+     <x>370</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>645</x>
@@ -592,8 +932,8 @@
    <slot>UpdateLink()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>228</y>
+     <x>279</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
@@ -602,18 +942,130 @@
    </hints>
   </connection>
   <connection>
-   <sender>Count</sender>
-   <signal>valueChanged(int)</signal>
+   <sender>AddSensor</sender>
+   <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>UpdateCount(int)</slot>
+   <slot>AddWidget()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>104</y>
+     <x>420</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel">
-     <x>642</x>
-     <y>63</y>
+     <x>724</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddEvent</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddWidget()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>420</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AddDevice</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddWidget()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>420</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Samples</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateMeasurements()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>420</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>614</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Average</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateMeasurements()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>626</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>controlManual</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>585</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>controlRemote</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>352</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>676</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>controlAuto</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>UpdateControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>522</x>
+     <y>378</y>
     </hint>
    </hints>
   </connection>
@@ -622,5 +1074,8 @@
   <slot>UpdateDevices()</slot>
   <slot>UpdateLink()</slot>
   <slot>UpdateCount(int)</slot>
+  <slot>AddWidget()</slot>
+  <slot>UpdateMeasurements()</slot>
+  <slot>UpdateControl()</slot>
  </slots>
 </ui>

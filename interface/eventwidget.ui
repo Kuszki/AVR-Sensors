@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EventWidget</class>
+ <widget class="QWidget" name="EventWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>565</width>
+    <height>50</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QLabel" name="Icon">
+     <property name="minimumSize">
+      <size>
+       <width>25</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>25</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../common.qrc">:/icons/icon_event</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="Name">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>NAME</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="Desc">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>DESC</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="Options">
+     <property name="icon">
+      <iconset resource="../common.qrc">
+       <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="Delete">
+     <property name="icon">
+      <iconset theme="list-remove">
+       <normaloff>interface</normaloff>interface</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../common.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>Options</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>onOptionsClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>509</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>507</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Delete</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>onDeleteClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>541</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onOptionsClick()</slot>
+  <slot>onDeleteClick()</slot>
+ </slots>
+</ui>

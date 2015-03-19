@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EventDialog</class>
+ <widget class="QDialog" name="EventDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>265</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>265</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Opcje zdarzenia</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../common.qrc">
+    <normaloff>:/icons/icon_options</normaloff>:/icons/icon_options</iconset>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelName">
+     <property name="text">
+      <string>Nazwa</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="Name"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelSensor">
+     <property name="text">
+      <string>Czujnik</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="Sensor">
+     <item>
+      <property name="text">
+       <string>SENSOR</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelValue">
+     <property name="text">
+      <string>Wartość</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="layoutConditions">
+     <item>
+      <widget class="QComboBox" name="Where">
+       <item>
+        <property name="text">
+         <string>Mniejsza</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Większa</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="Value">
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelAction">
+     <property name="text">
+      <string>Czynność</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="Action">
+     <item>
+      <property name="text">
+       <string>Wyłącz</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Załącz</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelDevice">
+     <property name="text">
+      <string>Urządzenie</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="Device">
+     <item>
+      <property name="text">
+       <string>DEVICE</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelActive">
+     <property name="text">
+      <string>Stan</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QCheckBox" name="Active">
+     <property name="text">
+      <string>Aktywne</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../common.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>EventDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>EventDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
