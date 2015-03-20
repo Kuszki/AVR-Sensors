@@ -33,6 +33,16 @@ MainWindow::MainWindow(QWidget *parent)
 	Interface->Active->setChecked(INI.value("Active", false).toBool());
 	Interface->Time->setValue(INI.value("Time", 3.0).toDouble());
 
+	switch (INI.value("Control", 0).toInt())
+	{
+		case 2:
+			Interface->controlRemote->setChecked(true);
+		break;
+		case 4:
+			Interface->controlAuto->setChecked(true);
+		break;
+	}
+
 	INI.beginGroup("Measurements");
 
 	Interface->Average->setChecked(INI.value("Average", false).toBool());
@@ -40,14 +50,25 @@ MainWindow::MainWindow(QWidget *parent)
 
 	INI.beginGroup("Database");
 
-	const QString dbPath = INI.value("Path", QDir::currentPath() + QDir::separator() + "database.sqlite").toString();
+	const QString dbPath = INI.value(
+						   "Path",
+						   QDir::currentPath() +
+						   QDir::separator() +
+						   "database.sqlite"
+						   ).toString();
 
 	INI.endGroup();
 
 	if (!QFile::exists(dbPath))
 	{
 		QFile::copy(":/data/database", dbPath);
-		QFile::setPermissions(dbPath, QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::WriteGroup | QFile::ReadOther);
+		QFile::setPermissions(
+					dbPath, QFile::ReadOwner |
+					QFile::WriteOwner |
+					QFile::ReadGroup |
+					QFile::WriteGroup |
+					QFile::ReadOther
+					);
 	}
 
 	Database.setDatabaseName(dbPath);
@@ -101,6 +122,9 @@ MainWindow::~MainWindow()
 
 	INI.setValue("Active", Interface->Active->isChecked());
 	INI.setValue("Time", Interface->Time->value());
+	INI.setValue("Control",
+			   (Interface->controlAuto->isChecked() << 2) |
+			   (Interface->controlRemote->isChecked() << 1));
 
 	INI.beginGroup("Measurements");
 
