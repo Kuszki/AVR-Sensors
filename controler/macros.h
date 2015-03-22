@@ -1,0 +1,12 @@
+#define DEVICES_COUNT	8
+#define SENSORS_COUNT	6
+#define DATA_FRAME_SIZE	5
+
+#define CONTROL_MANUAL	0
+#define CONTROL_REMOTE	2
+#define CONTROL_AUTO	4
+
+#define SIGNAL_STOP		0
+#define SIGNAL_START	1
+#define SIGNAL_CONTROL	2
+#define SIGNAL_MANUAL	3
