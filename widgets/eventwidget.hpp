@@ -25,7 +25,9 @@ class EventWidget : public QWidget
 			QString Variable;
 
 			unsigned char Pin;
-			unsigned char Value;
+			unsigned char Sensor;
+
+			unsigned Value;
 
 			float SwitchValue;
 			float LastValue;
@@ -52,6 +54,8 @@ class EventWidget : public QWidget
 		explicit EventWidget(QWidget* parent, unsigned char uID);
 		~EventWidget();
 
+		bool getEventFrame(unsigned char* pcFrame);
+
 	private slots:
 
 		void onOptionsClick(void);
@@ -63,7 +67,7 @@ class EventWidget : public QWidget
 
 		void onUpdateValue(QScriptEngine& Engine);
 
-		void onUpdateControl(bool bControl);
+		void onUpdateControl(unsigned uControl);
 
 		void onUpdateData(void);
 
@@ -74,6 +78,8 @@ class EventWidget : public QWidget
 
 		void onWidgetDelete(unsigned char uID,
 						unsigned char uWT);
+
+		void onEventRefresh(void);
 
 };
 

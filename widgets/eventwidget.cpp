@@ -19,8 +19,8 @@ EventWidget::EventWidget(QWidget* parent, unsigned char uID)
 		   SLOT(onUpdateValue(QScriptEngine&)));
 
 	connect(parent,
-		   SIGNAL(onControlChange(bool)),
-		   SLOT(onUpdateControl(bool)));
+		   SIGNAL(onControlChange(unsigned)),
+		   SLOT(onUpdateControl(unsigned)));
 
 	Dialog->LoadSettings();
 }
@@ -29,6 +29,18 @@ EventWidget::~EventWidget()
 {
 	delete Dialog;
 	delete Interface;
+}
+
+bool EventWidget::getEventFrame(unsigned char* pcFrame)
+{
+	if (!Data.Active || !Data.Simple) return false;
+
+	pcFrame[1] = (Data.Action << 4) + Data.When;
+	pcFrame[2] = ((Data.Pin - 2) << 4) + Data.Sensor;
+	pcFrame[3] = (unsigned char) (Data.Value >> 8);
+	pcFrame[4] = (unsigned char) Data.Value;
+
+	return true;
 }
 
 void EventWidget::onUpdateValue(QScriptEngine& Engine)
@@ -62,9 +74,11 @@ void EventWidget::onUpdateValue(QScriptEngine& Engine)
 	}
 }
 
-void EventWidget::onUpdateControl(bool bControl)
+void EventWidget::onUpdateControl(unsigned uControl)
 {
-	Data.Switch = !bControl;
+	Interface->Name->setEnabled(!(uControl & 8) || Data.Simple);
+
+	Data.Switch = true;
 }
 
 void EventWidget::onUpdateData(void)
@@ -119,6 +133,8 @@ void EventWidget::onDialogSave(const EventDialog::EventData& tData)
 	Data.Variable = tData.Variable;
 
 	Data.Pin = tData.PinID;
+	Data.Sensor = tData.SeID;
+
 	Data.Value = tData.Voltage * (1024.0 / 5.0);
 
 	Data.SwitchValue = tData.Value;
@@ -129,4 +145,6 @@ void EventWidget::onDialogSave(const EventDialog::EventData& tData)
 	Data.When = tData.Where;
 
 	Data.Switch = true;
+
+	emit onEventRefresh();
 }

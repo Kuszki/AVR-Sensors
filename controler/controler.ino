@@ -3,24 +3,28 @@
 #include <Flash.h>
 #include <Timer.h>
 
+#include "events.h"
+#include "memory.h"
 #include "macros.h"
+
+Settings	SETTINGS	= { 0, 0 };
+Event*	EVENTS	= nullptr;
 
 Timer	TIMER(Timer::T2);
 Comport	RS232(9600);
 Diode	LED(13);
 Flash	FLASH;
 
-Diode*	DEVICES = nullptr;
+volatile unsigned char OldState;
+volatile unsigned char NewState;
 
-void onStart(unsigned);
-void onStop(void);
-
-void onManual(unsigned char, bool);
+bool Connected;
 
 void setup(void)
 {
-	for (unsigned char i = 2; i < 13; i++)
-		pinMode(i, OUTPUT);
+	LoadSettings();
+
+	OldState = NewState =  SETTINGS.Devices;
 
 	RS232.Start();
 }
@@ -33,41 +37,51 @@ void loop(void)
 	switch (RecvData[0])
 	{
 		case SIGNAL_START:
-			onStart(RecvData[1] + (RecvData[2] << 8));
+			onStart((RecvData[1] << 8) + RecvData[2]);
 		break;
 		case SIGNAL_STOP:
-			onStop();
+			onStop(RecvData[1]);
 		break;
-		case SIGNAL_MANUAL:
-			onManual(RecvData[1], RecvData[2]);
+		case SIGNAL_CONTROL:
+			onControl(RecvData[1]);
+		break;
+		case SIGNAL_SWITCH:
+			onSwitch(RecvData[1], RecvData[2]);
+		break;
+		case SIGNAL_EVENTS:
+			onEvents(RecvData[1], RecvData[2], (RecvData[3] << 8) + RecvData[4]);
+		break;
+		case SIGNAL_DEVICES:
+			onDevices(RecvData[1]);
 		break;
 	}
-}
 
-void onStart(unsigned uTime)
-{
-	TIMER.SetPrefs(Timer::P1024, uTime);
+	if (SETTINGS.Control && (OldState != NewState))
+	{
+		for (register unsigned char i = 0; i < DEVICES_COUNT; i++)
+			digitalWrite(i + 2, NewState & (1 << i));
 
-	if (TIMER.Start()) LED.On();
-}
-
-void onStop(void)
-{
-	TIMER.Stop();
-	LED.Off();
-}
-
-void onManual(unsigned char uPin, bool bState)
-{
-	digitalWrite(uPin, bState);
+		OldState = NewState;
+	}
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	static unsigned SendData[SENSORS_COUNT];
+	static unsigned SensorData[SENSORS_COUNT];
+
+	unsigned char State = 0;
 
 	for (register unsigned char i = 0; i < SENSORS_COUNT; i++)
-		SendData[i] = analogRead(i);
+		SensorData[i] = analogRead(i);
 
-	RS232.Send(SendData, sizeof(unsigned) * SENSORS_COUNT);
+	if (SETTINGS.Control)
+		onRefresh(State, SensorData);
+
+	if (Connected)
+	{
+		RS232.Send(SensorData, sizeof(unsigned) * SENSORS_COUNT);
+		RS232.Send(&State, sizeof(unsigned char));
+	}
+
+	NewState = State;
 }

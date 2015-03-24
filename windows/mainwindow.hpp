@@ -8,17 +8,19 @@
 
 #define SENSORS_COUNT 6
 
-#define FRAME_SIZE (SENSORS_COUNT * 2)
+#define FRAME_SIZE ((SENSORS_COUNT * 2) + 1)
 #define SIGNAL_SIZE 5
 
 #define TYPE_SENSOR 1
 #define TYPE_EVENT 2
 #define TYPE_DEVICE 3
 
-#define SIGNAL_STOP 0
-#define SIGNAL_START 1
-#define SIGNAL_CONTROL 3
-#define SIGNAL_MANUAL 4
+#define SIGNAL_STOP			0
+#define SIGNAL_START		1
+#define SIGNAL_CONTROL		2
+#define SIGNAL_SWITCH		3
+#define SIGNAL_EVENTS		4
+#define SIGNAL_DEVICES		5
 
 #include <QMainWindow>
 #include <QSerialPort>
@@ -96,15 +98,19 @@ class MainWindow : public QMainWindow
 		void UpdateLink(void);
 		void UpdatehData(void);
 
+		void SaveEvents(void);
+		void SaveDevices(void);
+
 		void SwitchDevice(unsigned char uPin,
 					   bool bState);
 
 	signals:
 
-		void onControlChange(bool bLock);
+		void onControlChange(unsigned uControl);
 
 		void onRefreshValues(QScriptEngine& Engine);
 		void onRefreshEvents(QScriptEngine& Engine);
+		void onRefreshDevices(unsigned char Devices);
 
 		void onSampleUpdate(bool bActive, unsigned uSamples);
 

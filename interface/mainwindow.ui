@@ -237,7 +237,7 @@
               <string> s</string>
              </property>
              <property name="minimum">
-              <double>0.050000000000000</double>
+              <double>0.100000000000000</double>
              </property>
              <property name="maximum">
               <double>4.000000000000000</double>
@@ -303,7 +303,7 @@
               <number>10</number>
              </property>
              <property name="maximum">
-              <number>100</number>
+              <number>50</number>
              </property>
             </widget>
            </item>

@@ -149,6 +149,8 @@ void MainWindow::Connect(void)
 
 	Interface->Alive->setChecked(Serial.isOpen());
 	Interface->Save->setEnabled(Serial.isOpen());
+
+	Serial.clear();
 }
 
 void MainWindow::Disconnect(void)
@@ -157,6 +159,7 @@ void MainWindow::Disconnect(void)
 	{
 		Serial.write("\0\0\0\0\0", SIGNAL_SIZE);
 		Serial.flush();
+		Serial.clear();
 
 		Serial.close();
 	}
@@ -195,14 +198,14 @@ void MainWindow::DeleteWidget(unsigned char ID, unsigned char uType)
 		break;
 		case TYPE_EVENT:
 
-			delete Sensors.value(ID);
-			Sensors.remove(ID);
+			delete Events.value(ID);
+			Events.remove(ID);
 
 		break;
 		case TYPE_DEVICE:
 
-			delete Sensors.value(ID);
-			Sensors.remove(ID);
+			delete Devices.value(ID);
+			Devices.remove(ID);
 
 		break;
 	}
@@ -245,6 +248,10 @@ void MainWindow::AddEvent(unsigned char ID)
 	connect(widget,
 		   SIGNAL(onSwitchEvent(unsigned char,bool)),
 		   SLOT(SwitchDevice(unsigned char,bool)));
+
+	connect(widget,
+		   SIGNAL(onEventRefresh(void)),
+		   SLOT(SaveEvents(void)));
 }
 
 void MainWindow::AddDevice(unsigned char ID)
@@ -264,13 +271,18 @@ void MainWindow::AddDevice(unsigned char ID)
 		   SLOT(SwitchDevice(unsigned char,bool)));
 
 	connect(widget,
-		   SIGNAL(onDataChange()),
-		   SLOT(UpdateEvents()));
+		   SIGNAL(onDataChange(void)),
+		   SLOT(UpdateEvents(void)));
+
+	connect(widget,
+		   SIGNAL(onDataChange(void)),
+		   SLOT(SaveEvents(void)));
 }
 
 void MainWindow::UpdateEvents(void)
 {
-	foreach (EventWidget* widget, Events) widget->onUpdateData();
+	foreach (EventWidget* widget, Events)
+		widget->onUpdateData();
 }
 
 void MainWindow::UpdateControl(void)
@@ -280,12 +292,17 @@ void MainWindow::UpdateControl(void)
 		unsigned char Frame[SIGNAL_SIZE];
 
 		Frame[0] = SIGNAL_CONTROL;
-		Frame[1] = (Interface->controlAuto->isChecked() << 2) |
-				 (Interface->controlRemote->isChecked() << 1);
+		Frame[1] = Interface->controlAuto->isChecked();
+
+		if (Frame[1]) SaveEvents();
 
 		Serial.write((char*) Frame, SIGNAL_SIZE);
 
-		emit onControlChange(Interface->controlManual->isChecked());
+		emit onControlChange(
+					(Interface->controlManual->isChecked() << 1) +
+					(Interface->controlRemote->isChecked() << 2) +
+					(Interface->controlAuto->isChecked() << 3)
+					);
 	}
 }
 
@@ -327,16 +344,26 @@ void MainWindow::UpdateLink(void)
 		{
 			unsigned char Frame[SIGNAL_SIZE];
 
-			unsigned Time = (Interface->Time->value() * 65535) / 4.19424;
+			if (Interface->Active->isChecked())
+			{
+				unsigned Time = (Interface->Time->value() * 65535) / 4.19424;
 
-			Frame[0] = Interface->Active->isChecked() ?
-						 SIGNAL_START : SIGNAL_STOP;
-			Frame[1] = (unsigned char) Time;
-			Frame[2] = (unsigned char) (Time >> 8);
+				Frame[0] = SIGNAL_START;
+				Frame[1] = (unsigned char) (Time >> 8);
+				Frame[2] = (unsigned char) Time;
+			}
+			else
+			{
+				Frame[0] = SIGNAL_STOP;
+				Frame[1] = true;
+			}
 
 			Serial.write((char*) Frame, SIGNAL_SIZE);
 
+			UpdateMeasurements();
 			UpdateControl();
+
+			SaveDevices();
 		}
 	}
 }
@@ -361,6 +388,47 @@ void MainWindow::UpdatehData(void)
 
 	if (Interface->controlRemote->isChecked())
 		emit onRefreshEvents(Engine);
+
+	if (Interface->controlAuto->isChecked())
+		emit onRefreshDevices(aData[FRAME_SIZE - 1]);
+}
+
+void MainWindow::SaveEvents(void)
+{
+	if (!Serial.isOpen()) return;
+
+	unsigned char Frame[SIGNAL_SIZE];
+
+	Frame[0] = SIGNAL_EVENTS;
+	Frame[1] = 0;
+
+	Serial.write((char*) Frame, SIGNAL_SIZE);
+
+	foreach (EventWidget* event, Events)
+	{
+		if (!event->getEventFrame(Frame)) continue;
+
+		Serial.write((char*) Frame, SIGNAL_SIZE);
+	}
+
+	Frame[1] = 0xFF;
+
+	Serial.write((char*) Frame, SIGNAL_SIZE);
+}
+
+void MainWindow::SaveDevices(void)
+{
+	if (!Serial.isOpen()) return;
+
+	unsigned char Frame[SIGNAL_SIZE];
+
+	Frame[0] = SIGNAL_DEVICES;
+	Frame[1] = 0;
+
+	foreach (DeviceWidget* device, Devices)
+		device->getDeviceFrame(Frame[1]);
+
+	Serial.write((char*) Frame, SIGNAL_SIZE);
 }
 
 void MainWindow::SwitchDevice(unsigned char uPin, bool bState)
@@ -369,7 +437,7 @@ void MainWindow::SwitchDevice(unsigned char uPin, bool bState)
 	{
 		unsigned char Frame[SIGNAL_SIZE];
 
-		Frame[0] = SIGNAL_CONTROL;
+		Frame[0] = SIGNAL_SWITCH;
 		Frame[1] = uPin;
 		Frame[2] = bState;
 

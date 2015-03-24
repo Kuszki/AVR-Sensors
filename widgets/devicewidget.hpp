@@ -27,12 +27,16 @@ class DeviceWidget : public QWidget
 		DeviceDialog* Dialog;
 
 		unsigned char uPin = 0;
+
+		bool bDefaultState = false;
 		bool bInitialSwitch = false;
 
 	public:
 
 		DeviceWidget(QWidget* parent, unsigned char uID);
 		~DeviceWidget();
+
+		bool getDeviceFrame(unsigned char& uFrame);
 
 	private slots:
 
@@ -45,10 +49,12 @@ class DeviceWidget : public QWidget
 
 	public slots:
 
-		void onChangeControl(bool bLock);
+		void onChangeControl(unsigned uControl);
 
 		void onChangeState(unsigned char uPinID,
 					    bool bState);
+
+		void onChangeState(unsigned char uPins);
 
 	signals:
 

@@ -42,6 +42,7 @@ class EventDialog : public QDialog
 			unsigned char SensorID;
 			unsigned char DeviceID;
 			unsigned char PinID;
+			unsigned char SeID;
 		};
 
 	private:

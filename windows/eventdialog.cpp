@@ -154,7 +154,12 @@ void EventDialog::CompleteData(EventData& tData)
 		{
 			QString var = QString("x%1").arg(i + 1);
 
-			uCountS += Equation.contains(var);
+			if (Equation.contains(var))
+			{
+				tData.SeID = i;
+
+				uCountS++;
+			}
 
 			Equation.replace(QRegularExpression(var), "_X_");
 		}
@@ -178,6 +183,14 @@ void EventDialog::CompleteData(EventData& tData)
 			float Start = V_MIN;
 			float Stop = V_MAX;
 
+			Engine.globalObject().setProperty("_X_", Start);
+			float A = Engine.evaluate(Equation).toNumber();
+
+			Engine.globalObject().setProperty("_X_", Stop);
+			float B = Engine.evaluate(Equation).toNumber();
+
+			bool Grow = B > A;
+
 			do
 			{
 				Value = (Start + Stop) / 2.0;
@@ -186,15 +199,17 @@ void EventDialog::CompleteData(EventData& tData)
 
 				Found = Engine.evaluate(Equation).toNumber();
 
-				if (Found < tData.Value) Start = Value;
-				else Stop = Value;
+				if (Grow ? Found < tData.Value : Found > tData.Value)
+					Start = Value;
+				else
+					Stop = Value;
 
 				Diff = Found - tData.Value;
+
 			}
 			while(Diff > V_QUA || -Diff > V_QUA);
 
 			tData.Voltage = Value;
-
 		}
 	}
 	else return;

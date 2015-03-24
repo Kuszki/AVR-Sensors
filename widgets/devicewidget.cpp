@@ -15,12 +15,16 @@ DeviceWidget::DeviceWidget(QWidget* parent, unsigned char uID)
 		   SLOT(onDialogSave(const DeviceDialog::DeviceData&)));
 
 	connect(parent,
-		   SIGNAL(onControlChange(bool)),
-		   SLOT(onChangeControl(bool)));
+		   SIGNAL(onControlChange(unsigned)),
+		   SLOT(onChangeControl(unsigned)));
 
 	connect(parent,
 		   SIGNAL(onDeviceUpdate(unsigned char, bool)),
 		   SLOT(onChangeState(unsigned char,bool)));
+
+	connect(parent,
+		   SIGNAL(onRefreshDevices(unsigned char)),
+		   SLOT(onChangeState(unsigned char)));
 
 	Dialog->LoadSettings();
 }
@@ -30,13 +34,22 @@ DeviceWidget::~DeviceWidget()
 	delete Interface;
 }
 
+bool DeviceWidget::getDeviceFrame(unsigned char& uFrame)
+{
+	uFrame |= bDefaultState << (uPin - 2);
+
+	return true;
+}
+
 void DeviceWidget::onActiveSwitch(bool bMode)
 {
 	emit onManualSwitch(uPin, bMode);
 }
 
-void DeviceWidget::onChangeControl(bool bManual)
+void DeviceWidget::onChangeControl(unsigned uControl)
 {
+	bool bManual = uControl & 2;
+
 	Interface->Enabled->setEnabled(bManual);
 
 	if (bManual)
@@ -47,6 +60,11 @@ void DeviceWidget::onChangeState(unsigned char uPinID, bool bState)
 {
 	if (uPinID == uPin)
 		Interface->Enabled->setChecked(bState);
+}
+
+void DeviceWidget::onChangeState(unsigned char uPins)
+{
+	Interface->Enabled->setChecked(uPins & (1 << (uPin - 2)));
 }
 
 void DeviceWidget::onOptionsClick(void)
@@ -82,6 +100,8 @@ void DeviceWidget::onDialogSave(const DeviceDialog::DeviceData& tData)
 
 		bInitialSwitch = true;
 	}
+
+	bDefaultState = tData.Active;
 
 	uPin = tData.Pin;
 
