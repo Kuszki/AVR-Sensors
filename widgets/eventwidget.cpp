@@ -35,7 +35,7 @@ bool EventWidget::getEventFrame(unsigned char* pcFrame)
 {
 	if (!Data.Active || !Data.Simple) return false;
 
-	pcFrame[1] = (Data.Action << 4) + Data.When;
+	pcFrame[1] = (Data.Action << 4) + Data.Grow ? Data.When : !Data.When;
 	pcFrame[2] = ((Data.Pin - 2) << 4) + Data.Sensor;
 	pcFrame[3] = (unsigned char) (Data.Value >> 8);
 	pcFrame[4] = (unsigned char) Data.Value;
@@ -106,7 +106,8 @@ void EventWidget::onDeleteClick(void)
 			QMessageBox::warning(
 				this,
 				"Błąd",
-				"Nie udało się usunąć zdarzenia");
+				"Nie udało się usunąć zdarzenia"
+				);
 	}
 }
 
@@ -143,6 +144,7 @@ void EventWidget::onDialogSave(const EventDialog::EventData& tData)
 	Data.Action = tData.Action;
 	Data.Simple = tData.Simple;
 	Data.When = tData.Where;
+	Data.Grow = tData.Grow;
 
 	Data.Switch = true;
 

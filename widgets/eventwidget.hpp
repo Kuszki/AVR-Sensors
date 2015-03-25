@@ -37,6 +37,7 @@ class EventWidget : public QWidget
 			bool When;
 			bool Simple;
 			bool Switch;
+			bool Grow;
 		};
 
 	private:

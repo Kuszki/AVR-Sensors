@@ -34,6 +34,7 @@ class EventDialog : public QDialog
 			bool Action;
 			bool Where;
 			bool Simple;
+			bool Grow;
 
 			QString Sensor;
 			QString Device;

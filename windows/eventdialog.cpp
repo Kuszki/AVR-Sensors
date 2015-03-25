@@ -52,20 +52,20 @@ bool EventDialog::SaveSettings(void)
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
 	if (ID) query.prepare(
-		"UPDATE events SET \
-		name=:name, \
-		value=:value, \
-		condition=:condition, \
-		state=:state, \
-		active=:active, \
-		SENSOR_ID=:SENSOR_ID, \
-		TARGET_ID=:TARGET_ID \
-		WHERE ID=:ID");
+			"UPDATE events SET \
+			name=:name, \
+			value=:value, \
+			condition=:condition, \
+			state=:state, \
+			active=:active, \
+			SENSOR_ID=:SENSOR_ID, \
+			TARGET_ID=:TARGET_ID \
+			WHERE ID=:ID");
 	else query.prepare(
-		"INSERT INTO events \
-		(name, value, condition, state, active, SENSOR_ID, TARGET_ID) \
-		VALUES \
-		(:name, :value, :condition, :state, :active, :SENSOR_ID, :TARGET_ID)");
+			"INSERT INTO events \
+			(name, value, condition, state, active, SENSOR_ID, TARGET_ID) \
+			VALUES \
+			(:name, :value, :condition, :state, :active, :SENSOR_ID, :TARGET_ID)");
 
 	GetData(LastData);
 
@@ -189,7 +189,7 @@ void EventDialog::CompleteData(EventData& tData)
 			Engine.globalObject().setProperty("_X_", Stop);
 			float B = Engine.evaluate(Equation).toNumber();
 
-			bool Grow = B > A;
+			tData.Grow = B > A;
 
 			do
 			{
@@ -199,7 +199,7 @@ void EventDialog::CompleteData(EventData& tData)
 
 				Found = Engine.evaluate(Equation).toNumber();
 
-				if (Grow ? Found < tData.Value : Found > tData.Value)
+				if (tData.Grow ? Found < tData.Value : Found > tData.Value)
 					Start = Value;
 				else
 					Stop = Value;
