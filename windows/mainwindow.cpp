@@ -6,8 +6,10 @@ MainWindow* MainWindow::Instance = nullptr;
 MainWindow::MainWindow(QWidget *parent)
 : QMainWindow(parent), Interface(new Ui::MainWindow)
 {
-	if (Instance) qFatal("Próba zduplikowanie głównego okna.");
-	else Instance = this;
+	if (Instance)
+		qFatal("Próba zduplikowanie głównego okna.");
+	else
+		Instance = this;
 
 	Interface->setupUi(this);
 

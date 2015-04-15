@@ -106,8 +106,7 @@ void EventWidget::onDeleteClick(void)
 			QMessageBox::warning(
 				this,
 				"Błąd",
-				"Nie udało się usunąć zdarzenia"
-				);
+				"Nie udało się usunąć zdarzenia");
 	}
 }
 
@@ -124,12 +123,12 @@ void EventWidget::onDialogSave(const EventDialog::EventData& tData)
 				.arg(tData.Device));
 
 	Interface->Desc->setToolTip(
-				QString("%1 urządzenie \"%2\" gdy wartość czujnika \"%3\" będzie %4 od %5")
-				.arg(tData.Action ? "Włącz" : "Wyłącz")
-				.arg(tData.Device)
-				.arg(tData.Sensor)
-				.arg(tData.Where ? "większa" : "mniejsza")
-				.arg(tData.Value));
+		QString("%1 urządzenie \"%2\" gdy wartość czujnika \"%3\" będzie %4 od %5")
+		.arg(tData.Action ? "Włącz" : "Wyłącz")
+		.arg(tData.Device)
+		.arg(tData.Sensor)
+		.arg(tData.Where ? "większa" : "mniejsza")
+		.arg(tData.Value));
 
 	Data.Variable = tData.Variable;
 

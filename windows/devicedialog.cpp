@@ -22,9 +22,13 @@ bool DeviceDialog::LoadSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	query.prepare("SELECT name, pin, enabled \
-			    FROM targets \
-			    WHERE ID=:ID");
+	query.prepare(
+		"SELECT \
+			name, pin, enabled \
+		FROM \
+			targets \
+		WHERE \
+			ID=:ID");
 
 	query.bindValue(":ID", ID);
 
@@ -45,16 +49,21 @@ bool DeviceDialog::SaveSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	if (ID) query.prepare(
-				"UPDATE targets SET \
+	if (ID)
+		query.prepare(
+			"UPDATE \
+				targets \
+			SET \
 				name=:name, \
 				pin=:pin, \
 				enabled=:enabled \
-				WHERE ID=:ID");
-	else	query.prepare(
-				"INSERT INTO targets \
+			WHERE \
+				ID=:ID");
+	else
+		 query.prepare(
+			"INSERT INTO targets \
 				(name, pin, enabled) \
-				VALUES \
+			VALUES \
 				(:name, :pin, :enabled)");
 
 	GetData(LastData);
@@ -78,17 +87,23 @@ bool DeviceDialog::DeleteSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	query.prepare("SELECT \
-			    count(ID) \
-			    FROM events WHERE \
-			    TARGET_ID=:ID");
+	query.prepare(
+		"SELECT \
+			count(ID) \
+		FROM \
+			events \
+		WHERE \
+			TARGET_ID=:ID");
 
 	query.bindValue(":ID", ID);
 
 	if (!query.exec() || (query.next() && query.value(0).toBool())) return false;
 
-	query.prepare("DELETE FROM targets WHERE \
-			    ID=:ID");
+	query.prepare(
+		"DELETE FROM \
+			targets \
+		WHERE \
+			ID=:ID");
 
 	query.bindValue(":ID", ID);
 
@@ -120,10 +135,13 @@ void DeviceDialog::open(void)
 
 void DeviceDialog::accept(void)
 {
-	if (!SaveSettings()) QMessageBox::warning(
-				this,
-				"Błąd",
-				"Nie udało się zapisać rekordu w bazie danych");
+	if (!SaveSettings())
+	{
+		QMessageBox::warning(
+			this,
+			"Błąd",
+			"Nie udało się zapisać rekordu w bazie danych");
+	}
 	else QDialog::accept();
 }
 
@@ -137,6 +155,5 @@ void DeviceDialog::reject(void)
 void DeviceDialog::onParamsChange(void)
 {
 	Interface->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
-				!Interface->Name->text().isEmpty()
-				);
+		!Interface->Name->text().isEmpty());
 }

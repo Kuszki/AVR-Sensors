@@ -75,17 +75,20 @@ void DeviceWidget::onOptionsClick(void)
 void DeviceWidget::onDeleteClick(void)
 {
 
-	if (QMessageBox::Yes == QMessageBox::question(
+	if (QMessageBox::Yes ==
+	    QMessageBox::question(
 		    this,
 		    "Usuń sensor",
 		    "Czy chcesz bezpowrotnie usunąć to urządzenie?",
 		    QMessageBox::Yes|QMessageBox::No))
 	{
-		if (Dialog->DeleteSettings()) emit onWidgetDelete(ID, TYPE_DEVICE);
-		else QMessageBox::warning(
-					this,
-					"Błąd",
-					"Nie udało się usunąć urządzenia");
+		if (Dialog->DeleteSettings())
+			emit onWidgetDelete(ID, TYPE_DEVICE);
+		else
+			QMessageBox::warning(
+				this,
+				"Błąd",
+				"Nie udało się usunąć urządzenia");
 	}
 }
 

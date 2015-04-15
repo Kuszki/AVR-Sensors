@@ -38,4 +38,4 @@ CONFIG	+=	c++11
 
 RESOURCES	+=	common.qrc
 
-QMAKE_CXXFLAGS	+=	-s -fomit-frame-pointer -march=native -m3dnow
+QMAKE_CXXFLAGS	+=	-s -fomit-frame-pointer -march=native

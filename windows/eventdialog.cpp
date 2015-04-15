@@ -51,7 +51,8 @@ bool EventDialog::SaveSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	if (ID) query.prepare(
+	if (ID)
+		query.prepare(
 			"UPDATE events SET \
 			name=:name, \
 			value=:value, \
@@ -61,7 +62,8 @@ bool EventDialog::SaveSettings(void)
 			SENSOR_ID=:SENSOR_ID, \
 			TARGET_ID=:TARGET_ID \
 			WHERE ID=:ID");
-	else query.prepare(
+	else
+		query.prepare(
 			"INSERT INTO events \
 			(name, value, condition, state, active, SENSOR_ID, TARGET_ID) \
 			VALUES \
@@ -92,8 +94,11 @@ bool EventDialog::DeleteSettings(void)
 {
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	query.prepare("DELETE FROM events WHERE \
-			    ID=:ID");
+	query.prepare(
+		"DELETE FROM \
+			events \
+		WHERE \
+			ID=:ID");
 
 	query.bindValue(":ID", ID);
 
@@ -137,7 +142,13 @@ void EventDialog::CompleteData(EventData& tData)
 
 	QSqlQuery query(MainWindow::getInstance()->getDatabase());
 
-	query.prepare("SELECT name, label, expr FROM sensors WHERE ID=:ID");
+	query.prepare(
+		"SELECT \
+			name, label, expr \
+		FROM \
+			sensors \
+		WHERE \
+			ID=:ID");
 
 	query.bindValue(":ID", tData.SensorID);
 
@@ -214,7 +225,13 @@ void EventDialog::CompleteData(EventData& tData)
 	}
 	else return;
 
-	query.prepare("SELECT name, pin FROM targets WHERE ID=:ID");
+	query.prepare(
+		"SELECT \
+		    name, pin \
+		FROM \
+			targets \
+		WHERE \
+			ID=:ID");
 
 	query.bindValue(":ID", LastData.DeviceID);
 
@@ -262,9 +279,9 @@ void EventDialog::accept(void)
 	if (!SaveSettings())
 	{
 		QMessageBox::warning(
-					this,
-					"Błąd",
-					"Nie udało się zapisać rekordu w bazie danych");
+			this,
+			"Błąd",
+			"Nie udało się zapisać rekordu w bazie danych");
 	}
 	else QDialog::accept();
 }
@@ -279,6 +296,5 @@ void EventDialog::reject(void)
 void EventDialog::onParamsChange(void)
 {
 	Interface->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
-				!Interface->Name->text().isEmpty()
-				);
+				!Interface->Name->text().isEmpty());
 }
