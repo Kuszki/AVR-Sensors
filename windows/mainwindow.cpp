@@ -160,9 +160,8 @@ void MainWindow::Disconnect(void)
 	if (Serial.isOpen())
 	{
 		Serial.write("\0\0\0\0\0", SIGNAL_SIZE);
-		Serial.flush();
-		Serial.clear();
 
+		Serial.thread()->msleep(100);
 		Serial.close();
 	}
 

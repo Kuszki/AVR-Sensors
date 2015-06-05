@@ -1,13 +1,10 @@
 #ifndef _CONTROLER_EVENTS_H
 #define _CONTROLER_EVENTS_H
 
-#include <Diode.h>
-#include <Comport.h>
-#include <Flash.h>
-#include <Timer.h>
+#include "../../KALibs/KALibs.hpp"
 
-#include "memory.h"
-#include "macros.h"
+#include "memory.hpp"
+#include "macros.hpp"
 
 void onStart(unsigned uTime);
 

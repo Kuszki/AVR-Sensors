@@ -1,11 +1,11 @@
-#include "memory.h"
+#include "memory.hpp"
 
 extern Settings	SETTINGS;
 extern Event*		EVENTS;
 
-extern Timer		TIMER;
-extern Diode		LED;
-extern Flash		FLASH;
+extern KATimer		TIMER;
+extern KAOutput		LED;
+extern KAFlash		FLASH;
 
 unsigned char LoadSettings(void)
 {
@@ -15,13 +15,13 @@ unsigned char LoadSettings(void)
 
 	for (register unsigned char i = 0; i < DEVICES_COUNT; i++)
 	{
-		pinMode(i + 2, OUTPUT);
-		digitalWrite(i + 2, SETTINGS.Devices & (1 << i));
+		//pinMode(i + 2, OUTPUT);
+		//digitalWrite(i + 2, SETTINGS.Devices & (1 << i));
 	}
 
 	ReloadEvents();
 
-	TIMER.SetPrefs(Timer::P1024, SETTINGS.Refresh);
+	TIMER.SetPrefs(KATimer::P_1024, SETTINGS.Refresh);
 
 	if (TIMER.Start()) LED.On();
 

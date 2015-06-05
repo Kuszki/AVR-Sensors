@@ -1,11 +1,10 @@
-#include "events.h"
+#include "events.hpp"
 
-extern Settings	SETTINGS;
+extern Settings		SETTINGS;
 extern Event*		EVENTS;
 
-extern Timer		TIMER;
-extern Comport		RS232;
-extern Diode		LED;
+extern KATimer		TIMER;
+extern KAOutput		LED;
 
 extern bool 		Connected;
 
@@ -13,7 +12,7 @@ void onStart(unsigned uTime)
 {
 	Connected = true;
 
-	TIMER.SetPrefs(Timer::P1024, uTime);
+	TIMER.SetPrefs(KATimer::P_1024, uTime);
 
 	SETTINGS.Refresh = uTime;
 
@@ -48,7 +47,7 @@ void onControl(bool bControl)
 
 void onSwitch(unsigned char uPin, bool bState)
 {
-	digitalWrite(uPin, bState);
+	//KAOutput::SetState(uPin, bState);
 }
 
 void onRefresh(unsigned char& uDevices, const unsigned* puSensors)
@@ -59,11 +58,11 @@ void onRefresh(unsigned char& uDevices, const unsigned* puSensors)
 
 		if (EVENT.Params & 0x0F)
 		{
-			if (puSensors[EVENT.Pins & 0x0F] > EVENT.Value) bitWrite(uDevices, EVENT.Pins >> 4, EVENT.Params & 0xF0);
+			//if (puSensors[EVENT.Pins & 0x0F] > EVENT.Value) bitWrite(uDevices, EVENT.Pins >> 4, EVENT.Params & 0xF0);
 		}
 		else
 		{
-			if (puSensors[EVENT.Pins & 0x0F] < EVENT.Value) bitWrite(uDevices, EVENT.Pins >> 4, EVENT.Params & 0xF0);
+			//if (puSensors[EVENT.Pins & 0x0F] < EVENT.Value) bitWrite(uDevices, EVENT.Pins >> 4, EVENT.Params & 0xF0);
 		}
 	}
 }

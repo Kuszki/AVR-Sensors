@@ -1,11 +1,9 @@
 #ifndef _CONTROLER_MEMORY_H
 #define _CONTROLER_MEMORY_H
 
-#include <Diode.h>
-#include <Flash.h>
-#include <Timer.h>
+#include "../../KALibs/KALibs.hpp"
 
-#include "macros.h"
+#include "macros.hpp"
 
 typedef struct
 {
