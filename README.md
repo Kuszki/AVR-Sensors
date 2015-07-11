@@ -1,3 +1,6 @@
+# [DEPRECATED]
+Ten projekt jest przestarzały i nie będzie więcej wspierany. Jego następcą jest projekt AVR-Monitor.
+
 # AVR-Sensors
 Uniwersalne oprogramowanie obsługujące sensory podłączone do kontrolera AVR
 
